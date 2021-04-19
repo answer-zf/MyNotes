@@ -19,6 +19,7 @@
   - Xshell6
 
 - 数据库
+
   - MySQLWorkbench
 
 - 文件搜索：Everything
@@ -27,15 +28,17 @@
 
 - 有道词典
 
-- VPN：Shadowsocks
+- 梯子：
 
-- 命令行：cmder
+  - DevSidecar
+  - Shadowsocks
 
 - 下载：
-  - Internet Download Manager（IDM）
+
   - 迅雷
 
 - 卸载：
+
   - Uninstall Tool
 
 ## 可选
@@ -43,5 +46,3 @@
 - 思维导图：Xmind
 
 - 流程图：draw.io
-
-- windows 工具： PowerToys (Preview)

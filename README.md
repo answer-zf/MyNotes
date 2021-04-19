@@ -45,10 +45,10 @@
 - [Git](/Config_Document/Git_&_GitHub.md)
 - [Vim](/Config_Document/VIM.md)
 - [前端包管理工具](/Config_Document/Package_Management.md)
-- [Issues](/Issues.md)
+- [Issues](/Config_Document/Issues.md)
 
 ## ABOUT ZF
 
-### [introduction](/introduction.md)
+- [introduction](/introduction.md)
 
-### [my tools](/SoftWare.md)
+- [my tools](/Tools/SoftWare.md)
