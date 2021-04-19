@@ -1,4 +1,11 @@
-# 常用git指令
+# git
+
+## git gists
+
+- VS Code 远程同步 token：`42cafa1971c8eabf28258d9dd154f762`
+- Atom 远程同步 token：`6abd13e01b3fa94069f5122f59a32cec7315dc57`
+
+## 常用git指令
 
 1. 配置
 

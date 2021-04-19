@@ -1,8 +1,8 @@
 # VS Code
 
-## Setting Sync：远程配置同步插件的 token：
+## Setting Sync：远程配置同步插件的 token
 
-**sync.gist.id：42cafa1971c8eabf28258d9dd154f762**
+> sync.gist.id：42cafa1971c8eabf28258d9dd154f762
 
 ## 字体：[FiraCode](https://github.com/tonsky/FiraCode)
 
@@ -137,4 +137,3 @@ eslint --init
     ```
     3.  启动 http-server，命令行 使用 `http-server`
     4.  再使用 F5 即可
-    

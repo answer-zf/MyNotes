@@ -4,25 +4,25 @@
 
 ### 替换模式
 
--   进入替换模式：`R`
--   退出替换模式：`ESC`
+- 进入替换模式：`R`
+- 退出替换模式：`ESC`
 
 ### 粘贴模式
 
 > 解决 Vim 缩进混乱
 
--   进入粘贴模式：`:set paste`
--   退出粘贴模式：`:set nopaste`
+- 进入粘贴模式：`:set paste`
+- 退出粘贴模式：`:set nopaste`
 
 ### 可视化模式（块）
 
--   v + 方向键 + c/y/d 
--   V + 方向键 + c/y/d 整行块
+- v + 方向键 + c/y/d
+- V + 方向键 + c/y/d 整行块
 
 ### 假死
 
--  Ctrl + s 禁止向终端输出（假死）
--  Ctrl + q 解除假死
+- Ctrl + s 禁止向终端输出（假死）
+- Ctrl + q 解除假死
 
 ## 基本操作
 
@@ -94,35 +94,35 @@
 
 ## 大小写转换
 
-| 快捷键 | 作用     |
-| :----- | :------- |
-| gUw     | 大写     |
-| guw     | 小写 |
+| 快捷键 | 作用 |
+| :----- | :--- |
+| gUw    | 大写 |
+| guw    | 小写 |
 
 ## 自定义快捷键
 
--   ESC 设置为 CTRE I
+- ESC 设置为 CTRE I
 
-    -   Linux 在 .vimrc 文件里设置
-    -   Pycharm 在 .ideavimrc 文件里设置
+  - Linux 在 .vimrc 文件里设置
+  - Pycharm 在 .ideavimrc 文件里设置
 
     `:imap <C-I> <Esc>`
 
--   快捷键设置 规范如下
+- 快捷键设置 规范如下
 
-    -   <Esc>代表Escape键
-    -   <CR>代表Enter键
-    -   <D>代表Command键。
-    -   Alt键可以使用<M-key>或<A-key>
-    -   <C>代表Ctrl.
-    -   对于组合键，可以用<C-Esc>代表Ctrl-Esc
-    -   使用<S-F1>表示Shift-F1
-    
-    -   举例
-        -   将 Ctrl-i 映射为 Esc : `:imap <C-I> <Esc>`
-        -   配置F4为Ack快捷键 : `:map <F4> :Ack -i`
-        -   在插入模式, 设置 ctrl + \ 为退出文件 : `:map! <C-\> <ESC>:q<CR>`
-        
+  - `<Esc>` 代表 `Escape`键
+  - `<CR>` 代表 `Enter`键
+  - `<D>` 代表 `Command`键。
+  - Alt键可以使用 `<M-key>` 或 `<A-key>`
+  - `<C>` 代表 `Ctrl`
+  - 对于组合键，可以用 `<C-Esc>` 代表 `Ctrl-Esc`
+  - 使用 `<S-F1>` 表示 `Shift-F1`
+
+  - 举例
+    - 将 Ctrl-i 映射为 Esc : `:imap <C-I> <Esc>`
+    - 配置F4为Ack快捷键 : `:map <F4> :Ack -i`
+    - 在插入模式, 设置 ctrl + \ 为退出文件 : `:map! <C-\> <ESC>:q<CR>`
+
 | Command命令 | 常规模式 | 可视化模式 | 运算符模式 | 插入模式 | 命令行模式 |
 | :---------: | :------: | :--------: | :--------: | :------: | :--------: |
 |    :map     |    √     |     √      |     √      |    -     |     -      |

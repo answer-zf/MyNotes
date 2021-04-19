@@ -2,9 +2,9 @@
 
 ## Atom
 
-### Setting Sync：远程配置同步插件的 token：
+### Setting Sync：远程配置同步插件的 token
 
-**sync.token：6abd13e01b3fa94069f5122f59a32cec7315dc57**
+> sync.token：6abd13e01b3fa94069f5122f59a32cec7315dc57
 
 ### shortcut
 
@@ -29,9 +29,9 @@
 
 ### 插件
 
--   translation `Ctrl + Alt + o`
--   Idea Vim
--   Code Glance
+- translation `Ctrl + Alt + o`
+- Idea Vim
+- Code Glance
 
 ### shortcut
 
@@ -52,10 +52,10 @@
 | 函数内显示参数信息  | Ctrl + P           |
 | 提取方法            | Ctrl + Alt + M     |
 | 快捷导入模块        | Alt + Enter        |
-| 开启命令行 | Alt + F12        |
-| 关闭命令行        | Shift + Esc        |
-| 切换文件        | Ctrl + Tab        |
+| 开启命令行          | Alt + F12          |
+| 关闭命令行          | Shift + Esc        |
+| 切换文件            | Ctrl + Tab         |
 
--   代码显示延迟设置：
+- 代码显示延迟设置：
 
-    -   `File > settings > Editor > General > Code Completion > Parameter info > show the parameter info popup in 0 ms`
+  - `File > settings > Editor > General > Code Completion > Parameter info > show the parameter info popup in 0 ms`

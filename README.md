@@ -39,19 +39,13 @@
 
 ## 常用软件的配置
 
-### 代码编辑器
-
-- [VSCode](/Config_Document/VS%20Code.md)
-- [Atom & Pycharm](/Config_Document/Atom&Pycharm.md)
-- [Typora](/Config_Document/Typora_Cmder_MD.md)
-- [Sublime](/Config_Document/Sublime_Configuration.md)
-
 ### 开发工具
 
-- [前端包管理工具 npm ...](/Config_Document/NPM-NVM-CNPM-NRM-YARN.md)
+- [Sublime](/Config_Document/Sublime_Configuration.md)
 - [Git](/Config_Document/Git_&_GitHub.md)
-- [SVN](/Config_Document/VersionControl_&_SVN.md)
-- [Command](/Config_Document/Dos%20_%20Sublime_Operate.md)
+- [Vim](/Config_Document/VIM.md)
+- [前端包管理工具](/Config_Document/Package_Management.md)
+- [Issues](/Issues.md)
 
 ## ABOUT ZF
 
