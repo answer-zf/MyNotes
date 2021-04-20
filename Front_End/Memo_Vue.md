@@ -1,4 +1,4 @@
-# Vue 相关 备忘
+# 备忘(实际项目所遇到的问题在此记录)
 
 ## Vue
 
@@ -178,92 +178,6 @@ body .el-table colgroup.gutter{
 - padEnd(len,str)
 
   - 反之，向右
-
-### 异步相关
-
-> 内部执行顺序同步执行，由异步方法，与微任务、宏任务执行方式一样，会在等待队列中做相应的优先处理
-
-Promise.all() 方法用于将多个Promise实例，包装成一个新的Promise实例。
-
-- 接受一个数组作为参数，数组内的成员 需要是 Promise对象的实例
-- 所有成员状态都为 成功，返回 所有成员的返回值组成的一个数组（同步），传递给该实例的回调函数
-- 若有一个成员被 rejected，则返回 第一个被reject的实例的返回值，传递给该实例的回调函数
-
-#### 微任务、宏任务
-
-> JS执行有同步任务队列和等待任务队列
-> 主任务队列存储的都是同步任务
-> 等待任务队列存储的都是异步任务
->
-> 事件循环: 首先浏览器会把主任务队列中的同步任务挨个全部执行完，然后再去等待任务队列中看哪个任务可以执行了，然后把该执行的任务放到主任务队列中去执行，等这个任务执行完，再去等待任务中看谁可以执行了，再把这个任务放到主任务队列中执行... 如此循环
-
-- 宏任务和微任务是等待任务队列中的异步任务的处理机制
-- 微任务的优先级比宏任务的要高（在第一次宏任务执行后，将所有微任务执行完，在执行第二个宏任务）
-
-- 微任务（由JS引擎发起）：
-
-  1. Promise的then的回调函数
-  2. async 函数await下面的代码
-
-- 宏任务（由宿主{Node、浏览器}发起）：
-
-  - 定时器：setTimeout/setInterval
-  - script（即第一个同步任务就是第一个宏任务）
-
-#### async、await(ES7)
-
-- 提交成功后，立即渲染页面时，不要分在两个函数中写，有异步的问题
-
-- 带有 async 关键字的函数，返回的是一个promise，即成功 、 失败的结果
-- await 关键字 所等待的是 返回结果，函数内代码依旧执行
-
-```js
-// 示例
-async function async1() {
-  console.log('async1 start')
-  await async2()
-  console.log('async1 end')
-}
-async function async2() {
-  console.log('async2')
-}
-console.log('script start')
-setTimeout(function() {
-  console.log('setTimeout')
-}, 0)
-async1()
-new Promise(function(resolve) {
-  console.log('promise1')
-  resolve()
-}).then(function() {
-  console.log('promise2')
-})
-console.log('script end')
-
-// 执行步骤：
-// script start => async1 start => async2 => promise1 => script end  同步代码
-// async1 end => promise2 => setTimeout 优先执行微服务
-// 在浏览器打印如上面所示，在node中打印结果不同，node解析与浏览器不同
-// 原因：浏览器的Event loop是在HTML5中定义的规范，而node中则由libuv库实现
-```
-
-### 原型链
-
-`prototype`（原型对象）是构造函数有的属性
-`__proto__`（隐式原型）是所有对象都有的属性
-
-> 实例对象的隐式原型 指向 构造函数的原型对象
-
-### localStorage sessionStorage
-
-- localStorage 里面存储的数据没有过期时间设置
-  - 可跨浏览器窗口和选项卡间共享。
-  - 多个浏览器窗口和标签页中共享数据，使用 LocalStorage
-- 存储在 sessionStorage 里面的数据在页面会话结束时会被清除
-  - 页面会话在浏览器打开期间一直保持，并且重新加载或恢复页面仍会保持原来的页面会话
-  - 打开多个相同的URL的Tabs页面，会创建各自的sessionStorage
-  - 关闭对应浏览器窗口（Window）/ tab，会清除对应的sessionStorage
-  - SessionStorage数据独立于其他选项卡和窗口。如果同时打开了两个选项卡，其中一个更新了SessionStorage，则在其他选项卡和窗口中不会反映出来
 
 ## CSS
 
