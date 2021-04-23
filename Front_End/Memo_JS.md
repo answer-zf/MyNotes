@@ -7,7 +7,7 @@
 | 对象  | `__proto__` `constructor`             | 对象独有                                              |
 | 函数  | `prototype` `__proto__` `constructor` | `prototype` 函数独有 <br> 函数也是对象,具有对象的属性 |
 
-### `__proto___` 属性
+### `__proto__` 属性
 
 > `__proto__` 是对象独有的属性,由一个对象指向一个对象(他的原型对象,父对象)
 > 通过 `__proto__` 属性将对象连接起来的这条链路 即 原型链

@@ -143,25 +143,37 @@ export default ClassPage
   - useEffect() 允许返回一个函数，在组件卸载时，执行该函数，清理副效应。如果不需要清理副效应，useEffect()就不用返回任何值。
 
 ```jsx
-import React, { useEffect, useState } from 'react';
+// 父组件 
+<FunctionPage parent="this is father" />
 
-function FunctionComponent(props) {
-  const [date, setDate] = useState(new Date());
+// 子组件
+import React, { useEffect, useState } from 'react'
+
+const FunctionPage = ({ parent }) => {
+  let [count, setCount] = useState(10)
+
   useEffect(() => {
     const timer = setInterval(() => {
-      setDate(new Date());
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
+      setCount(count => count + 1)
+    }, 1000)
+    console.log('object')
+    return () => {
+      clearInterval(timer)
+    }
+  }, [])
+  // 第二个参数数字包含的时依赖项,
+  // [parent]由于parent是定值, useEffect 不会重复执行
+  // 当为[parent, count],useEffect 1s执行一次
+  // []即不绑定依赖 useEffect 就执行一次
+
   return (
     <div>
-      <h3>FunctionComponent</h3>
-      <p>{date.toLocaleTimeString()}</p>
+      <h5>this is function page</h5>
+      <p>{count}</p>
+      <p>{parent}</p>
     </div>
-  );
+  )
 }
-
-export default FunctionComponent;
 ```
 
 ### 生命周期
@@ -170,9 +182,83 @@ export default FunctionComponent;
   - componentWillMount
   - componentWillReceiveProps
   - componentWillUpdate
-- 需要使用需要加 `UNSAFE_`前缀
-- 做老项目兼容时，可使用命令批处理 `npx react-codemod rename-unsafe-lifecycles <path>`（path 批处理路径，不写则项目根目录下所有文件）
-  - 使用命令前 git 需要提交一次
+
+#### 挂载时
+
+1. constructor 构造器
+2. getDerivedStateFromProps (静态)
+3. render
+4. componentDidMount
+
+#### 更新时
+
+1. getDerivedStateFromProps (新增,静态)
+2. shouldComponentUpdate
+3. render
+4. getSnapshotBeforeUpdate (新增,非静态)
+5. componentDidUpdate
+
+#### 卸载
+
+componentWillUnmount
+
+#### 静态 生命周期使用
+
+`static getDerivedStateFromProps(nextProps, prevState) { }`
+
+#### getSnapshotBeforeUpdate componentDidUpdate 协同
+
+```js
+getSnapshotBeforeUpdate(prevProps, prevState){
+  console.log('getSnapshotBeforeUpdate');
+  return '这是快照传来的'
+}
+
+// snapshotValue 是上面 return 的值
+componentDidUpdate(prevProps, prevState,snapshotValue){
+  console.log('componentDidUpdate');
+}
+```
+
+### 组件复合
+
+- 模板组件 Layout
+  - 模板使用的头部组件 TopBar
+  - 模板使用的底部组件 BotBar
+- 示例组件:
+  - 用户页面 UserPage
+  - 首页 HomePage
+
+```jsx
+// Layout
+import BotBar from './BotBar'
+import TopBar from './TopBar'
+
+const Layout = props => {
+  const { children, topBar, botBar } = props
+  return (
+    <div>
+      {topBar && <TopBar />}
+      {children.content}
+      {botBar && <BotBar />}
+    </div>
+  )
+}
+
+export default Layout
+
+// UserPage
+import Layout from './Layout/Layout'
+
+const UserPage = () => {
+  return (
+    <Layout topBar={true} botBar={true}>
+      {{ content: <div>this is userpage</div> }}
+    </Layout>
+  )
+}
+export default UserPage
+```
 
 ## umi
 
