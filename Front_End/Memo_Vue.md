@@ -76,6 +76,197 @@ nextTick(()=>{
 - ref 定义基本数据类型 使用 变量名.value 获取 (watchEffect)
 - reactive 定义复杂的数据类型 直接获取 (watch)
 
+### watch 的依赖追踪
+
+#### 对象属性监听
+
+```js
+// queryData:{name:...,...}
+
+// 方法1：
+watch: {
+     queryData: {
+         handler: function() {
+            //do something
+         },
+         deep: true // 修改了这个queryData中的任何一个属性，都会执行handler这个方法。不过其实这样开销是蛮大的，尤其是对象里面结构嵌套过深的时候
+     }
+}
+
+// 方法2：
+watch: {
+     'queryData.name': {
+         handler: function() {
+            //do something
+         },
+     }
+}
+
+// 方法3:巧用计算属性
+computed: {
+    getName: function() {
+      return this.queryData.name
+    }
+}
+watch: {
+     getName: {
+         handler: function() {
+            //do something
+         },
+     }
+}
+```
+
+### mixin / extends
+
+> 两个都可以理解为继承，mixins接收对象数组（可理解为多继承），extends接收的是对象或函数（可理解为单继承）。
+
+#### 生命周期、watch
+
+```javascript
+
+const extend = {
+  created () {
+    console.log('extends created')
+  }
+}
+const mixin1 = {
+  created () {
+    console.log('mixin1 created')
+  }
+}
+const mixin2 = {
+  created () {
+    console.log('mixin2 created')
+  }
+}
+export default {
+  extends: extend,
+  mixins: [mixin1, mixin2],
+  name: 'app',
+  created () {
+    console.log('created')
+  }
+
+// console
+// extends created
+// mixin1 created
+// mixin2 created
+// created
+
+```
+
+- 优先调用mixins和extends继承的父类，extends触发的优先级更高，相对于是队列
+- watch的值继承规则一样
+
+#### data/computed
+
+```js
+// 父类
+const extend = {
+  data() {
+    return {
+      name: 'extend name',
+    }
+  },
+}
+const mixin1 = {
+  data() {
+    return {
+      name: 'mixin1 name',
+    }
+  },
+}
+const mixin2 = {
+  data() {
+    return {
+      name: 'mixin2 name',
+    }
+  },
+}
+
+// 子类
+// name = 'name'
+export default {
+  mixins: [mixin1, mixin2],
+  extends: extend,
+  name: 'app',
+  data() {
+    return {
+      name: 'name',
+    }
+  },
+}
+
+// name = 'mixin2 name'，extends会被mixins覆盖
+export default {
+  extends: extend,
+  mixins: [mixin1, mixin2],
+  name: 'app'
+}
+
+// name = 'mixin1 name'，mixins后面继承会覆盖前面的
+export default {
+  mixins: [mixin2, mixin1],
+  extends: extend,
+  name: 'app'
+}
+```
+
+- 结论：子类再次声明，data中的变量都会被重写，以子类的为准。
+- 如果子类不声明，data中的变量将会最后继承的父类为准。
+- 重写顺序：extend - `mixins[0]` - `mixin[1]` - data（子类再次声明）
+- props中属性、methods中的方法和computed的值继承规则一样。
+
+> 综上：extend的优先级最高，mixin 次之，最后为子类
+
+### element / input
+
+> vue项目中element-ui中el-input使用原生JS事件修改值data中数据不同步问题
+
+```html
+<template>
+  <div>
+    <el-input v-model="item.value" v-for="(item, index) in arr" :key="index" @blur="blurHandle"></el-input>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      arr: [{ value: 10 }, { value: 50 }],
+    }
+  },
+  methods: {
+    blurHandle(e) {
+      if (e.target.value > 20) {
+        e.target.value = 20
+        // e.target.dispatchEvent(new Event('input')) 没有这行代码时，input框显示的数据，于data中的 arr 不同
+        // 解开注释，手动绑定
+        console.log(this.arr)
+      }
+    },
+  },
+}
+</script>
+```
+
+- 自定义事件
+
+```js
+//自定义事件
+const inputEvent=new Event('input')
+
+// 手动触发的两种方法
+
+// 1. 这种得需要用window对象监听 相当于$on('input') 
+window.addEventListener('input',funciton(){
+})
+// 2. 手动触发 就这相当vue中$emit('input')
+dom.dipatchEvent(inputEvent)
+```
+
 ### Vuex
 
 - mapState,mapMutations... (vuex 映射)
@@ -140,9 +331,54 @@ body .el-table colgroup.gutter{
 
 `Object.prototype.toString.call(value)`
 
-### 数组
+### ES 6
 
-#### ES 5
+#### symbol
+
+- Symbol 作为属性名，遍历对象的时候，该属性不会出现在`for...in`、`for...of`循环中，也不会被`Object.keys()`、`Object.getOwnPropertyNames()`、`JSON.stringify()`返回。
+- 但是，它也不是私有属性，有一个`Object.getOwnPropertySymbols()`方法，可以获取指定对象的所有 `Symbol` 属性名。该方法返回一个数组，成员是当前对象的所有用作属性名的 `Symbol` 值。
+
+```javascript
+const obj = {};
+let a = Symbol('a');
+let b = Symbol('b');
+
+obj[a] = 'Hello';
+obj[b] = 'World';
+
+const objectSymbols = Object.getOwnPropertySymbols(obj);
+
+objectSymbols
+// [Symbol(a), Symbol(b)]
+```
+
+- `Reflect.ownKeys()`方法可以返回所有类型的键名，包括常规键名和 Symbol 键名。
+
+#### `for ... of`
+
+> 本质：`for...of`循环内部调用的是数据结构的`Symbol.iterator`方法
+
+- `for...of`循环可以使用的范围包括数组、Set 和 Map 结构、某些类似数组的对象（比如arguments对象、DOM NodeList 对象）、Generator 对象，以及字符串。
+- `for...of`循环调用遍历器接口，数组的遍历器接口只返回具有数字索引的属性。这一点跟`for...in`(为了对象遍历键的循环)循环不一样。
+
+```js
+let {keys, values, entries} = Object;
+let obj = { a: 1, b: 2, c: 3 };
+
+for (let key of keys(obj)) {
+  console.log(key); // 'a', 'b', 'c'
+}
+
+for (let value of values(obj)) {
+  console.log(value); // 1, 2, 3
+}
+
+for (let [key, value] of entries(obj)) {
+  console.log([key, value]); // ['a', 1], ['b', 2], ['c', 3]
+}
+```
+
+### ES 5
 
 - filter()
 
@@ -157,15 +393,13 @@ body .el-table colgroup.gutter{
   - some() 只要其中一个为true，就会返回true `一真即真`
   - every() 必须所有都返回true才会返回true `一假即假`
 
-#### 数组扁平化(ES10)
+### ES 7
 
 > 将嵌套的数组变成一维数组的过程
 
 - `arr.flat()`
 
-### 字符串
-
-#### ES 7
+### ES 10
 
 - padStart(len,str)
 
