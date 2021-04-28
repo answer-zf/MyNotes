@@ -142,11 +142,6 @@ export default ClassPage
   - useEffect() 第二个参数：如果不希望useEffect()每次渲染都执行，使用它的第二个参数，使用一个数组指定副效应函数的依赖项，只有依赖项发生变化，才会重新渲染
   - useEffect() 允许返回一个函数，在组件卸载时，执行该函数，清理副效应。如果不需要清理副效应，useEffect()就不用返回任何值。
 
-- 自定义hook
-  - 自定义 Hook，命名以 use 开头
-  - 只能在函数最外层调⽤ Hook (不能在 if for function 中 调用)
-  - 只能在 React 的函数组件中调⽤ Hook
-
 ```jsx
 // 父组件 
 <FunctionPage parent="this is father" />
@@ -178,6 +173,39 @@ const FunctionPage = ({ parent }) => {
       <p>{parent}</p>
     </div>
   )
+}
+```
+
+##### 自定义hook
+
+- 自定义 Hook，命名以 use 开头
+- 只能在函数最外层调⽤ Hook (不能在 if for function 中 调用)
+- 只能在 React 的函数组件中调⽤ Hook
+- vue3 和 react 的hook 写法以及在写法中的理念差不多，可在hook中添加生命周期
+
+```jsx
+import React, { useEffect, useState } from 'react';
+
+function CustomHookPage(props) {
+  return (
+    <div>
+      <h3>CustomHookPage</h3>
+      <p>{useClock().toLocaleTimeString()}</p>
+    </div>
+  );
+}
+
+export default CustomHookPage;
+
+function useClock() {
+  const [date, setdate] = useState(new Date());
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setdate(new Date());
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+  return date;
 }
 ```
 
@@ -213,7 +241,7 @@ componentWillUnmount
 
 #### getSnapshotBeforeUpdate componentDidUpdate 协同
 
-```js
+```jsx
 getSnapshotBeforeUpdate(prevProps, prevState){
   console.log('getSnapshotBeforeUpdate');
   return '这是快照传来的'
@@ -279,7 +307,7 @@ export default UserPage
 
 - 由于 reducer 是纯函数，不能修改state数据，只能返回一个全新的对象，state是只读的
 
-```javascript
+```jsx
 // store/index.js
 import { createStore } from 'redux'
 
@@ -298,7 +326,7 @@ const store = createStore(dateReducer)
 export default store
 ```
 
-```javascript
+```jsx
 import React, { Component } from 'react'
 import store from '../../store'
 
@@ -354,13 +382,13 @@ export default class ReduxOrigin extends Component {
     - 对象，该对象的每个键值对都是一个映射
     - 也可以为函数，返回对象，会得到dispatch和ownProps（容器组件的props对象）两个参数。
 
-```js
+```jsx
 <Provider store={store}>
   <ReactReduxPage />
 </Provider>
 ```
 
-```js
+```jsx
 import React, { Component } from 'react'
 
 import { connect } from 'react-redux'
@@ -587,7 +615,7 @@ export default UserPage
   - 如果 this.props 获取不到history ,使用 witchRouter 对组件做层包裹即（`export default witchRouter(ComponentName)`）
     - 前提，组件不能包含 Router (BrowserRouter) 组件，下面的示例不适用 witchRouter.一般 Router包裹在App的外层。
 
-```javascript
+```jsx
 import React, { Component } from 'react'
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 import Home from './Home'
@@ -639,7 +667,7 @@ export default class RouterPage extends Component {
   2. Component 组件中，一个点击事件，修改state为一个定值，后续继续点击（无效点击）仍会重新渲染组件，不利于优化
      - 优化方案：
 
-      ```js
+      ```jsx
         // count 为state 中修改的定值
         shouldComponentUpdate(nextProps, nextState) {
           return nextState.count !== this.state.count;
@@ -654,7 +682,7 @@ export default class RouterPage extends Component {
      - 在 state 中修改 对象，出现无效点击，页面重新渲染
      - 用 setState 的第二种写法，即 入参为 state的回调，返回一个对象
 
-      ```javascript
+      ```jsx
         this.setState(state => {
           state.count = 100
           console.log(state)
@@ -673,7 +701,7 @@ export default class RouterPage extends Component {
 
 - 父组件跟新 state ,传递给 子组件state中的数据 没有变，但会对子组件重新渲染
 
-```javascript
+```jsx
 import { memo, useState } from 'react'
 
 const Child = memo(({data}) =>{
@@ -727,7 +755,7 @@ const Test =()=>{
 
 - useCallback 是 userMemo 的语法糖
 
-```javascript
+```jsx
 // 组件传值(子组件-> 父组件)以及useMemo 返回函数的示例
 import React, { useState, memo, useMemo, useCallback } from 'react'
 
