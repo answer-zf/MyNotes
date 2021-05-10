@@ -413,6 +413,34 @@ for (let [key, value] of entries(obj)) {
 
   - 反之，向右
 
+## TS
+
+### typeof ArrayInstance[number]
+
+- 作用：将数组每项元素做type
+
+```typescript
+const books = [
+  { title: "zf", author: "zzzf", pageCount: 1 },
+  { title: "df", author: "dddf", pageCount: 2 }
+]
+
+type Book = typeof books[number]
+
+// Book type 即 {
+//   title: string;
+//   author: string;
+//   pageCount: number;
+// }
+
+```
+
+### InstanceType
+
+- 作用：获取构造函数类型的实例类型
+- 示例：获取 element 中的表单类型
+  - `const form = ref<InstanceType<typeof ELForm>>()`
+
 ## CSS
 
 ### 溢出省略隐藏
@@ -442,6 +470,61 @@ vertical-align
 - 默认与父元素基线对齐(baseline)
 - 当垂直对齐方式出现异常时可使用该属性
   - 比如父元素由于浮动等其他原因导致子元素对齐出现问题时 使用 text-top (把元素的顶端与父元素字体的顶端对齐)
+
+### 文本选中样式修改
+
+```css
+p::selection {
+  background-color: #b981d1;
+  color: white;
+}
+p::-moz-selection {
+  background-color: #b981d1;
+  color: white;
+}
+p::-webkit-selection {
+  background-color: #b981d1;
+  color: white;
+}
+```
+
+## Eslint
+
+### 使用注释取消 报错方法
+
+```javascript
+// 1. 在整个文件中取消eslint检查：
+/* eslint-disable */
+alert(‘foo’);
+
+// 2. 在整个文件中禁用某一项eslint规则的检查：
+/* eslint-disable no-alert */
+alert(‘foo’);
+
+// 3. 在整个文件中禁用多项eslint规则的检查：
+/* eslint-disable no-alert, no-console */
+alert(‘foo’);
+console.log(‘bar’);
+
+// 4. 针对某一行禁用eslint检查：
+alert(‘foo’); // eslint-disable-line
+
+// eslint-disable-next-line
+alert(‘foo’);
+
+// 5. 针对某一行的某一具体规则禁用eslint检查：
+alert(‘foo’); // eslint-disable-line no-alert
+
+// eslint-disable-next-line no-alert
+alert(‘foo’);
+
+// 6. 针对某一行禁用多项具体规则的检查：
+
+alert(‘foo’); // eslint-disable-line no-alert, quotes, semi
+
+// eslint-disable-next-line no-alert, quotes, semi
+alert(‘foo’);
+```
 
 ## 项目优化
 
