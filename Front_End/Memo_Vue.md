@@ -528,6 +528,22 @@ alert(‘foo’);
 
 ## 项目优化
 
+### 配置样式前缀autoprefixer
+
+- `npm i postcss autoprefixer -D`
+
+- 由于 vue 对 postcss 做了内置的配置，安装完毕插件以后配置 `.browserslistrc`即可
+
+```config
+> 1%
+last 3 versions
+not ie <= 8
+chrome >= 14
+safari >= 3
+ios >= 8
+android >= 4.0
+```
+
 ### 生产阶段 移除 console
 
 - 使用 `babel-plugin-transform-remove-console` babel插件解决
