@@ -89,7 +89,9 @@ watch: {
          handler: function() {
             //do something
          },
-         deep: true // 修改了这个queryData中的任何一个属性，都会执行handler这个方法。不过其实这样开销是蛮大的，尤其是对象里面结构嵌套过深的时候
+         // 修改了这个queryData中的任何一个属性，
+        //  都会执行handler这个方法。不过这样开销会很大，尤其是对象里面结构嵌套过深的时候
+         deep: true 
      }
 }
 
@@ -220,7 +222,9 @@ export default {
 
 > 综上：extend的优先级最高，mixin 次之，最后为子类
 
-### element / input
+### Element
+
+#### input
 
 > vue项目中element-ui中el-input使用原生JS事件修改值data中数据不同步问题
 
@@ -267,16 +271,26 @@ window.addEventListener('input',funciton(){
 dom.dipatchEvent(inputEvent)
 ```
 
-### Vuex
+#### button
 
-- mapState,mapMutations... (vuex 映射)
+- 点击后，偶尔出现 选中状态不能取消的情况
 
-  - `...mapMutations('user', ['updateIsAdmin']),`
-  - 'user': modules/user.js
-  - 'updateIsAdmin': 模块中 mutations项中的方法名
-  - mapState 同理
+```typescript
+// <el-button @click="clickHandle(id, $event)"></el-button>
 
-### dialog
+// MSInputMethodContext typescript 原生类型，不确定合理性，可直接用 any
+const handleClick = (id: string, event: MSInputMethodContext) => {
+  // * 解决 按钮点击后状态不消失的bug
+  let target = event.target as HTMLElement
+  if (target.nodeName == 'SPAN') {
+    target = event.target.parentNode as HTMLElement
+  }
+  target.blur()
+  console.log(id, target)
+}
+```
+
+#### dialog
 
 - resetField 的坑
 
@@ -284,7 +298,7 @@ dom.dipatchEvent(inputEvent)
   - 解决：在 dialog 上加 `destroy-on-close` 属性，用于重置验证信息，或者使用 v-if
   - `destroy-on-close` 关闭时销毁 Dialog 中的元素
 
-### table
+#### table
 
 - 表头与内容错位
 
@@ -298,12 +312,21 @@ body .el-table colgroup.gutter{
 }
 ```
 
-### 国际化相关
+#### 国际化相关
 
 **使用 vue-i18n 的方案做项目的国际化的注意事项：**
 
 - 当使用 element 表格组件进行二次封装时，若 i18n 不更新，需要在表头添加`:header-cell-style="{}"`
   - 使用自定义表头样式 覆盖原有样式，实现国际化组件的实时更新
+
+### Vuex
+
+- mapState,mapMutations... (vuex 映射)
+
+  - `...mapMutations('user', ['updateIsAdmin']),`
+  - 'user': modules/user.js
+  - 'updateIsAdmin': 模块中 mutations项中的方法名
+  - mapState 同理
 
 ### import / require
 
@@ -528,51 +551,143 @@ alert(‘foo’);
 
 ## 项目优化
 
+### 添加 tailwind postcss autoprefixer stylelint
+
 ### 配置样式前缀autoprefixer
+
+> 如果 项目中没有 tailwind ，css 的优化只完成该项即可实现前缀的补充。
 
 - `npm i postcss autoprefixer -D`
 
 - 由于 vue 对 postcss 做了内置的配置，安装完毕插件以后配置 `.browserslistrc`即可
 
-```config
-> 1%
-last 3 versions
-not ie <= 8
-chrome >= 14
-safari >= 3
-ios >= 8
-android >= 4.0
-```
+    ```config
+    > 1%
+    last 3 versions
+    not ie <= 8
+    chrome >= 14
+    safari >= 3
+    ios >= 8
+    android >= 4.0
+    ```
+
+### tailwind 框架
+
+> 安装tailwind 同时需要配合 postcss autoprefixer stylelint（css代码验证） 使用
+
+1. 安装
+
+   - `npm install tailwindcss@npm:@tailwindcss/postcss7-compat @tailwindcss/postcss7-compat postcss@^7 autoprefixer@^9 -D`
+   - 由于使用最新的版本，不能对 postcss 8 兼容，固使用指定的兼容版本。
+
+2. 配置 对 tailwind 做优化配置: `tailwind.config.js`
+
+    ```javascript
+    module.exports = {
+      purge: ['./src/**/*.{vue,js,ts,jsx,tsx}'],
+      darkMode: false, // or 'media' or 'class'
+      theme: {
+        extend: {},
+      },
+      variants: {
+        extend: {},
+      },
+      plugins: [],
+    }
+    ```
+
+3. vue 中内置了 对 postcss autoprefixer 的配置,只需要添加postcss 对tailwind 的 autoprefixer 的支持即可,配置：`postcss.config.js`
+
+    ```javascript
+    module.exports = {
+      plugins: [require('tailwindcss'), require('autoprefixer')],
+    }
+    ```
+
+#### 配置 stylelint css 验证
+
+1. 安装
+
+   - `npm i stylelint stylelint-config-standard -D`
+
+2. 配置
+
+   - 根目录下，添加 `.stylelintrc.js` 文件
+
+   - 添加如下配置
+
+      ```javascript
+      module.exports = {
+        processors: [],
+        plugins: [],
+        extends: 'stylelint-config-standard',
+        ignoreFiles: ['node_modules/**', 'dist/**'],
+        rules: {
+          // 忽略 at rule 验证，针对 tailwind 的配置。
+          'at-rule-no-unknown': [
+            true,
+            {
+              ignoreAtRules: ['tailwind', 'layer', 'apply', 'variants', 'responsive', 'screen'],
+            },
+          ],
+          // 忽略 ::v-deep( .zf p){...} vue3 中的修改框架自带配置。
+          'selector-pseudo-element-no-unknown': [
+            true,
+            {
+              ignorePseudoElements: ['v-deep'],
+            },
+          ],
+        },
+      }
+      ```
+
+3. 添加 vscode 工作区配置 `.vscode/settings.json`
+
+    ```javascript
+    {
+      // 关闭重复的 vue template 内的校验
+      // "vetur.validation.template": false,
+      // 在 vue 的 template 中可使用 ts提示
+      "vetur.experimental.templateInterpolationService": true,
+      // ? 对上面的功能的校验，选择是否关闭。
+      // ? "vetur.validation.interpolation": false,
+      // tailwind css 中的 atRules 不被识别
+      // 忽略 scss 中的 atRules 验证
+      "scss.lint.unknownAtRules": "ignore",
+      // 直接关闭 css 验证，使用 stylelint 全权代理
+      "css.validate": false
+    }
+    ```
 
 ### 生产阶段 移除 console
 
 - 使用 `babel-plugin-transform-remove-console` babel插件解决
 
-```js
-// 项目发布阶段需要用到的 插件数组
-const prodPlugins = []
-if (process.env.NODE_ENV === 'production') {
-  // 在 babel.config.js 按需移除 console
-  prodPlugins.push('transform-remove-console')
-}
+    ```js
+    // 项目发布阶段需要用到的 插件数组
+    const prodPlugins = []
+    if (process.env.NODE_ENV === 'production') {
+      // 在 babel.config.js 按需移除 console
+      prodPlugins.push('transform-remove-console')
+    }
 
-module.exports = {
-  presets: ['@vue/cli-plugin-babel/preset'],
-  plugins: [
-    [
-      'component',
-      {
-        libraryName: 'element-ui',
-        styleLibraryName: 'theme-chalk'
-      }
-    ],
-    // 发布产品时候的插件数组
-    ...prodPlugins,
-    // 路由懒加载
-    '@babel/plugin-syntax-dynamic-import'
-  ]
-}
-```
+    module.exports = {
+      presets: ['@vue/cli-plugin-babel/preset'],
+      plugins: [
+        [
+          'component',
+          {
+            libraryName: 'element-ui',
+            styleLibraryName: 'theme-chalk'
+          }
+        ],
+        // 发布产品时候的插件数组
+        ...prodPlugins,
+        // 路由懒加载
+        '@babel/plugin-syntax-dynamic-import'
+      ]
+    }
+    ```
 
 ### 配置 生产 开发的入口文件
 
