@@ -26,6 +26,7 @@
     - [关于加载大量数据的优化不做分页](#关于加载大量数据的优化不做分页)
       - [使用element](#使用element)
       - [使用第三方组件](#使用第三方组件)
+  - [admin 框架优化点](#admin-框架优化点)
 
 ## 原型链
 
@@ -535,3 +536,25 @@ export default {
     }
     </script>
     ```
+
+## admin 框架优化点
+
+- 使用动态路由的形式做路由添加（addRoutes）
+
+```javascript
+const router = new VueRouter([
+  {
+    path: "/",
+    name: "Home",
+    component: Home
+  }
+]);
+let route=[
+{
+  path: '/pageA',
+  name: 'pageA',
+  component: pageA,
+}]
+router.addRoutes(route);
+export default router
+```
