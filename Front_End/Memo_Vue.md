@@ -22,7 +22,6 @@
       - [input与原生事件冲突](#input与原生事件冲突)
       - [button点击后选中状态不取消](#button点击后选中状态不取消)
       - [dialog > resetField问题](#dialog--resetfield问题)
-      - [关于加载大量数据的优化不做分页](#关于加载大量数据的优化不做分页)
       - [table 表头与内容错位](#table-表头与内容错位)
       - [国际化table表头实时更新问题](#国际化table表头实时更新问题)
     - [Vuex](#vuex)
@@ -416,11 +415,6 @@ const handleClick = (id: string, event: MSInputMethodContext) => {
   - 问题：重置到最近一次提交，快速连续提交会出问题(连点)
   - 解决：在 dialog 上加 `destroy-on-close` 属性，用于重置验证信息，或者使用 v-if
   - `destroy-on-close` 关闭时销毁 Dialog 中的元素
-
-#### 关于加载大量数据的优化不做分页
-
-- 使用 InfiniteScroll 无线滚动组件
-- 先将 海量数据做 存储，然后捞出显示区域内的数据，触底调用函数，再将部分数据捞出显示。
 
 #### table 表头与内容错位
 

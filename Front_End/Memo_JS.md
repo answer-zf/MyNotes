@@ -21,8 +21,11 @@
       - [Vue 中的内存泄漏问题](#vue-中的内存泄漏问题)
       - [内存泄漏优化](#内存泄漏优化)
       - [内存泄漏调试](#内存泄漏调试)
-  - [element原理](#element原理)
+  - [element](#element)
     - [message原理](#message原理)
+    - [关于加载大量数据的优化不做分页](#关于加载大量数据的优化不做分页)
+      - [使用element](#使用element)
+      - [使用第三方组件](#使用第三方组件)
 
 ## 原型链
 
@@ -293,7 +296,7 @@ ps. 关注点:闭包,DOM\BOM操作,定时器\时间监听,以及循环组件时�
 
 - chrome Memory 面板 进行快照调试。
 
-## element原理
+## element
 
 ### message原理
 
@@ -420,3 +423,115 @@ export default {
 }
 </script>
 ```
+
+### 关于加载大量数据的优化不做分页
+
+#### 使用element
+
+- 使用 InfiniteScroll 无线滚动组件
+- 先将 海量数据做 存储，然后捞出显示区域内的数据，触底调用函数，再将部分数据捞出显示。
+- 使用的数组操作，截取 slice，合并 concat，删除 splice
+
+#### 使用第三方组件
+
+> 第三方组件很多，以 vue-virtual-scroll-list 举例
+
+- `vue-virtual-scroll-list`
+  - `https://github.com/tangbc/vue-virtual-scroll-list`
+  - 组件参数：
+    - data-key (type: string)：每个数据对象中获取唯一键，键名（id）
+    - data-sources (type: Array)：列表数据：每一行都必须有一个唯一的值（id）
+    - data-component (type: Component)：每一行的子组件
+    - keeps(type: number)：默认30个，默认渲染的个数
+  - 子组件传递参数
+    - index (type: number)：每行索引
+    - source (type: object)：每行内容
+
+    ```vue
+    <template>
+      <div>
+        <virtual-list style="height: 360px; overflow-y: auto;"
+          :data-key="'id'"
+          :data-sources="items"
+          :data-component="itemComponent"
+        />
+      </div>
+    </template>
+    
+    <script>
+      import Item from './Item'
+      import VirtualList from 'vue-virtual-scroll-list'
+    function createData(len) {
+        const arr = []
+        for (let index = 0; index < len; index++) {
+            const obj = { id: index, text: Math.random() }
+            arr.push(obj)
+        }
+        return arr
+    }
+      export default {
+        name: 'root',
+        data () {
+          return {
+            itemComponent: Item,
+            items: createData(200)
+          }
+        },
+        components: { 'virtual-list': VirtualList }
+      }
+    </script>
+
+    <!--  Item    -->
+    <template>
+      <div>每一行的内容</div>
+    </template>
+    
+    <script>
+      export default {
+        name: 'item-component',
+        props: {
+          index: { // 每一行的索引
+            type: Number
+          },
+          source: { // 每一行的内容
+            type: Object,
+            default () {
+              return {}
+            }
+          }
+        }
+      }
+    </script>
+    ```
+
+- `vue-virtual-scroller`
+  - `https://github.com/Akryum/vue-virtual-scroller#recyclescroller`
+  - items：呈现数据
+  - item-size：呈现数据的个数
+  - key-filed：如果 items 是对象，需要用这个做唯一标识
+
+    ```vue
+    <template>
+      <RecycleScroller
+        style="height: 200px; overflow: auto"
+        class="scroller"
+        :items="listItem"
+        :item-size="20"
+        key-field="data"
+      >
+        <template v-slot="{ item }">
+          <el-checkbox :key="item.data" :label="item.label" />
+        </template>
+      </RecycleScroller>
+    </template>
+
+    <script>
+    export default {
+      data() {
+            return {
+                listItem: []
+            }
+        }
+    }
+    </script>
+    ```
