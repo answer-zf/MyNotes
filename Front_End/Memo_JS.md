@@ -1,6 +1,32 @@
 # 补遗 (干货)
 
-## `prototype` / `__proto__` / `constructor` 属性
+- [补遗 (干货)](#补遗-干货)
+  - [原型链](#原型链)
+    - [`prototype` / `__proto__` / `constructor` 属性](#prototype--__proto__--constructor-属性)
+    - [`__proto__` 属性](#__proto__-属性)
+    - [`prototype` 属性](#prototype-属性)
+    - [`constructor` 属性](#constructor-属性)
+  - [缓存](#缓存)
+  - [异步相关](#异步相关)
+    - [微任务、宏任务](#微任务宏任务)
+    - [async、await(ES7)](#asyncawaites7)
+    - [异步转同步](#异步转同步)
+    - [常见的 微、宏任务面试题](#常见的-微宏任务面试题)
+  - [内存泄漏](#内存泄漏)
+    - [垃圾回收](#垃圾回收)
+      - [标记清除](#标记清除)
+      - [引用计数](#引用计数)
+    - [内存泄漏](#内存泄漏-1)
+      - [代码关注点](#代码关注点)
+      - [Vue 中的内存泄漏问题](#vue-中的内存泄漏问题)
+      - [内存泄漏优化](#内存泄漏优化)
+      - [内存泄漏调试](#内存泄漏调试)
+  - [element原理](#element原理)
+    - [message原理](#message原理)
+
+## 原型链
+
+### `prototype` / `__proto__` / `constructor` 属性
 
 | 类型  | 具有的属性                            | 备注                                                  |
 | :---: | :------------------------------------ | :---------------------------------------------------- |
@@ -40,7 +66,9 @@ Foo.prototype.__proto__ === Object.prototype
 - Foo.prototype 具有 constructor 属性 指向 Foo
 - 即 `(f1.__proto__.constructor===)f1.constructor === Foo` (不是本身拥有的,是继承而来的)
 
-## cookie localStorage sessionStorage indexDB 的区别
+## 缓存
+
+- cookie localStorage sessionStorage indexDB 的区别
 
 | 特性         | cookie                                                                          | localStorage                                | sessionStorage               |
 | :----------- | :------------------------------------------------------------------------------ | :------------------------------------------ | :--------------------------- |
@@ -86,7 +114,44 @@ Promise.all() 方法用于将多个Promise实例，包装成一个新的Promise�
 - 带有 async 关键字的函数，返回的是一个promise，即成功 、 失败的结果
 - await 关键字 所等待的是 返回结果，函数内代码依旧执行
 
-```js
+### 异步转同步
+
+- 使用 promise 结合 async await 实现。
+
+```javascript
+function async() {
+  setTimeout(() => {
+    console.log(1)
+  }, 0);
+  console.log(2);
+}
+async() // 执行顺序：2 => 1
+
+// ---- 转同步 即 修改代码 后执行顺序改为 1 => 2
+
+function sync() {
+  const async = () => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        console.log(1)
+        resolve(1)
+      }, 0)
+    })
+  }
+
+  const sync2 = async () => {
+    await async()
+    console.log(2)
+  }
+
+  sync2()
+}
+sync() // 执行顺序：1 => 2
+```
+
+### 常见的 微、宏任务面试题
+
+```javascript
 // 示例
 async function async1() {
   console.log('async1 start')
@@ -116,7 +181,7 @@ console.log('script end')
 // 原因：浏览器的Event loop是在HTML5中定义的规范，而node中则由libuv库实现
 ```
 
-## 垃圾回收 内存泄漏
+## 内存泄漏
 
 ### 垃圾回收
 
@@ -227,3 +292,131 @@ ps. 关注点:闭包,DOM\BOM操作,定时器\时间监听,以及循环组件时�
 #### 内存泄漏调试
 
 - chrome Memory 面板 进行快照调试。
+
+## element原理
+
+### message原理
+
+- 事先准备好的 提示框组件 `zfMsg.vue`
+
+```vue
+<template>
+  <div>
+    <ul>
+      <li v-for="(item, index) in messages" :key="index" class="message">
+        {{ item.message }}
+      </li>
+    </ul>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      messages: [],
+      id: 0
+    }
+  },
+  methods: {
+    add(options) {
+      const layer = {
+        id: this.id++,
+        ...options
+      }
+      layer.timer = setTimeout(() => {
+        this.remove(layer)
+        this.id = 0
+      }, 2000)
+      this.messages.push(layer)
+      console.log(layer.id)
+    },
+    remove(layer) {
+      this.messages = this.messages.filter(item => item.id !== layer.id)
+    }
+  }
+}
+</script>
+
+<style>
+.message {
+  position: fixed;
+  left: 50%;
+  top: 30px;
+  transform: translate3d(-50%, 0, 0);
+  background: #000;
+  background: #f0f9eb;
+  color: #67c23a;
+  padding: 10px 20px;
+  border-radius: 4px;
+  animation: move 0.3s;
+}
+
+@keyframes move {
+  0% {
+    top: 0;
+    opacity: 0;
+  }
+  100% {
+    top: 30px;
+    opacity: 1;
+  }
+}
+</style>
+
+```
+
+- 使用 类 的方式将组件进行挂载
+
+```javascript
+import Vue from 'vue'
+import zfMsg from './zfMsg.vue'
+
+class Msg {
+  constructor() {
+    const vm = new Vue({
+      render: h => h(zfMsg)
+    }).$mount() // 手动挂载实例
+    // 将 vue 实例的根DOM元素 挂载至body尾部
+    document.body.appendChild(vm.$el)
+    // 获取实例下的子组件
+    this.component = vm.$children[0]
+  }
+
+  success(options) {
+    this.component.add(options)
+  }
+}
+
+Msg.getInstance = (function() {
+  let instance
+  return function() {
+    if (!instance) {
+      instance = new Msg()
+    }
+    return instance
+  }
+})()
+
+export const Message = Msg.getInstance()
+
+```
+
+- 使用
+
+```vue
+<template>
+  <el-button @click="handleMsg">ddd</el-button>
+</template>
+
+<script>
+import { Message } from '@/components/zfMsg/index.js'
+export default {
+  methods: {
+    handleMsg() {
+      Message.success({ message: '111' })
+    }
+  }
+}
+</script>
+```

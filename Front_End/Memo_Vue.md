@@ -1,5 +1,60 @@
 # 备忘(实际项目所遇到的问题在此记录)
 
+- [备忘(实际项目所遇到的问题在此记录)](#备忘实际项目所遇到的问题在此记录)
+  - [Vue](#vue)
+    - [Vue3](#vue3)
+      - [覆盖框架样式](#覆盖框架样式)
+      - [dom操作](#dom操作)
+      - [nextTick](#nexttick)
+      - [ref/reactive](#refreactive)
+    - [Vue2](#vue2)
+    - [watch的依赖追踪](#watch的依赖追踪)
+      - [对象属性监听](#对象属性监听)
+    - [在created时获取dom方法(nextTick)](#在created时获取dom方法nexttick)
+    - [事件总线](#事件总线)
+      - [初始化](#初始化)
+      - [派发事件](#派发事件)
+      - [接收事件](#接收事件)
+    - [mixin/extends](#mixinextends)
+      - [生命周期、watch](#生命周期watch)
+      - [data/computed](#datacomputed)
+    - [Element](#element)
+      - [input与原生事件冲突](#input与原生事件冲突)
+      - [button点击后选中状态不取消](#button点击后选中状态不取消)
+      - [dialog > resetField问题](#dialog--resetfield问题)
+      - [关于加载大量数据的优化不做分页](#关于加载大量数据的优化不做分页)
+      - [table 表头与内容错位](#table-表头与内容错位)
+      - [国际化table表头实时更新问题](#国际化table表头实时更新问题)
+    - [Vuex](#vuex)
+    - [import/require](#importrequire)
+  - [JS](#js)
+    - [undefined / null / ''](#undefined--null--)
+    - [判断类型](#判断类型)
+    - [js 精度保持](#js-精度保持)
+    - [ES 6](#es-6)
+      - [symbol](#symbol)
+      - [`for...of`](#forof)
+    - [ES 5](#es-5)
+    - [ES 7](#es-7)
+    - [ES 10](#es-10)
+  - [TS](#ts)
+    - [typeof ArrayInstance[number]](#typeof-arrayinstancenumber)
+    - [InstanceType](#instancetype)
+  - [CSS](#css)
+    - [溢出省略隐藏](#溢出省略隐藏)
+    - [垂直对齐调整](#垂直对齐调整)
+    - [文本选中样式修改](#文本选中样式修改)
+  - [Eslint](#eslint)
+    - [使用注释取消 报错方法](#使用注释取消-报错方法)
+  - [项目优化](#项目优化)
+    - [tailwind](#tailwind)
+      - [添加 tailwind postcss autoprefixer stylelint](#添加-tailwind-postcss-autoprefixer-stylelint)
+      - [配置样式前缀autoprefixer](#配置样式前缀autoprefixer)
+      - [tailwind 框架](#tailwind-框架)
+      - [配置 stylelint css 验证](#配置-stylelint-css-验证)
+    - [生产阶段 移除 console](#生产阶段-移除-console)
+    - [配置 生产 开发的入口文件](#配置-生产-开发的入口文件)
+
 ## Vue
 
 ### Vue3
@@ -8,7 +63,7 @@
 
 > 在 vue3 scss 中 覆盖框架样式 使用 ::v-deep(...) 而 不使用 /deep/ ...
 
-#### dom 操作
+#### dom操作
 
 - 获取一个元素的DOM
 
@@ -71,12 +126,14 @@ nextTick(()=>{
 })
 ```
 
-#### ref / reactive
+#### ref/reactive
 
 - ref 定义基本数据类型 使用 变量名.value 获取 (watchEffect)
 - reactive 定义复杂的数据类型 直接获取 (watch)
 
-### watch 的依赖追踪
+### Vue2
+
+### watch的依赖追踪
 
 #### 对象属性监听
 
@@ -119,7 +176,69 @@ watch: {
 }
 ```
 
-### mixin / extends
+### 在created时获取dom方法(nextTick)
+
+```javascript
+created() {
+  this.$nextTick(() => {
+    console.log(this.$refs.btn)
+  })
+},
+```
+
+### 事件总线
+
+#### 初始化
+
+```javascript
+// event-bus.js
+import Vue from 'vue'
+export const EventBus = new Vue()
+
+// main
+import {EventBus} from './event-bus.js'
+Vue.prototype.$EventBus=EventBus
+
+// 或者直接再main中初始化
+Vue.prototype.$EventBus = new Vue()
+```
+
+#### 派发事件
+
+- `this.$EventBus.$emit(发送的事件名,传递的参数)`
+
+```javascript
+methods: {
+  sendMsg() {
+    // 调用全局Vue实例中的$EventBus事件总线中的$emit属性，
+    // 发送事件"aMsg",并携带A组件中的Msg
+    this.$EventBus.$emit("aMsg", this.MsgA);
+  }
+}
+```
+
+#### 接收事件
+
+- `this.$EventBus.$on(监听的事件名, 回调函数)`
+- 有事件监听，必须在组件销毁前做移除
+
+```javascript
+mounted() {
+  // 调用全局Vue实例中的$EventBus事件总线中的$on属性,
+  // 监听其他组件发送到事件总线中的aMsg事件
+  this.$EventBus.$on("aMsg", (data) => {
+    //将A组件传递过来的参数data赋值给msgB
+    this.msgB = data;
+  });
+},
+beforeDestroy(){
+  // 只要做了监听，必须再销毁之前移除监听事件，防止内存泄漏
+  // 移除监听事件"aMsg"
+  this.$EventBus.$off("aMsg")
+}
+```
+
+### mixin/extends
 
 > 两个都可以理解为继承，mixins接收对象数组（可理解为多继承），extends接收的是对象或函数（可理解为单继承）。
 
@@ -224,7 +343,7 @@ export default {
 
 ### Element
 
-#### input
+#### input与原生事件冲突
 
 > vue项目中element-ui中el-input使用原生JS事件修改值data中数据不同步问题
 
@@ -271,7 +390,7 @@ window.addEventListener('input',funciton(){
 dom.dipatchEvent(inputEvent)
 ```
 
-#### button
+#### button点击后选中状态不取消
 
 - 点击后，偶尔出现 选中状态不能取消的情况
 
@@ -290,7 +409,7 @@ const handleClick = (id: string, event: MSInputMethodContext) => {
 }
 ```
 
-#### dialog
+#### dialog > resetField问题
 
 - resetField 的坑
 
@@ -298,7 +417,12 @@ const handleClick = (id: string, event: MSInputMethodContext) => {
   - 解决：在 dialog 上加 `destroy-on-close` 属性，用于重置验证信息，或者使用 v-if
   - `destroy-on-close` 关闭时销毁 Dialog 中的元素
 
-#### table
+#### 关于加载大量数据的优化不做分页
+
+- 使用 InfiniteScroll 无线滚动组件
+- 先将 海量数据做 存储，然后捞出显示区域内的数据，触底调用函数，再将部分数据捞出显示。
+
+#### table 表头与内容错位
 
 - 表头与内容错位
 
@@ -312,7 +436,7 @@ body .el-table colgroup.gutter{
 }
 ```
 
-#### 国际化相关
+#### 国际化table表头实时更新问题
 
 **使用 vue-i18n 的方案做项目的国际化的注意事项：**
 
@@ -328,7 +452,7 @@ body .el-table colgroup.gutter{
   - 'updateIsAdmin': 模块中 mutations项中的方法名
   - mapState 同理
 
-### import / require
+### import/require
 
 - url 包含变量时只能使用 require 做动态导入
   - const lang = require(`./lang/${key}`) (√)
@@ -340,7 +464,7 @@ body .el-table colgroup.gutter{
 
 ## JS
 
-### undefined null ''
+### undefined / null / ''
 
 [参考文档](https://blog.csdn.net/cauyahui/article/details/86569573)
 
@@ -353,6 +477,18 @@ body .el-table colgroup.gutter{
 ### 判断类型
 
 `Object.prototype.toString.call(value)`
+
+### js 精度保持
+
+- 保持 0.1 + 0.2 的精度
+
+```javascript
+console.log(0.1+0.2) // 0.30000000000000004
+
+(0.1+0.2).toFixed(5) // '0.30000' type:string
+
+parseFloat((0.1+0.2).toFixed(5)) // 0.3
+```
 
 ### ES 6
 
@@ -377,7 +513,7 @@ objectSymbols
 
 - `Reflect.ownKeys()`方法可以返回所有类型的键名，包括常规键名和 Symbol 键名。
 
-#### `for ... of`
+#### `for...of`
 
 > 本质：`for...of`循环内部调用的是数据结构的`Symbol.iterator`方法
 
@@ -551,9 +687,11 @@ alert(‘foo’);
 
 ## 项目优化
 
-### 添加 tailwind postcss autoprefixer stylelint
+### tailwind
 
-### 配置样式前缀autoprefixer
+#### 添加 tailwind postcss autoprefixer stylelint
+
+#### 配置样式前缀autoprefixer
 
 > 如果 项目中没有 tailwind ，css 的优化只完成该项即可实现前缀的补充。
 
@@ -571,7 +709,7 @@ alert(‘foo’);
     android >= 4.0
     ```
 
-### tailwind 框架
+#### tailwind 框架
 
 > 安装tailwind 同时需要配合 postcss autoprefixer stylelint（css代码验证） 使用
 
