@@ -22,6 +22,7 @@
       - [input与原生事件冲突](#input与原生事件冲突)
       - [button点击后选中状态不取消](#button点击后选中状态不取消)
       - [dialog > resetField问题](#dialog--resetfield问题)
+      - [scrollbar 的使用](#scrollbar-的使用)
       - [table 表头与内容错位](#table-表头与内容错位)
       - [国际化table表头实时更新问题](#国际化table表头实时更新问题)
     - [Vuex](#vuex)
@@ -415,6 +416,29 @@ const handleClick = (id: string, event: MSInputMethodContext) => {
   - 问题：重置到最近一次提交，快速连续提交会出问题(连点)
   - 解决：在 dialog 上加 `destroy-on-close` 属性，用于重置验证信息，或者使用 v-if
   - `destroy-on-close` 关闭时销毁 Dialog 中的元素
+
+#### scrollbar 的使用
+
+- 在纵向滚动避免显示原生横向滚动条，需要在外层包裹一个元素设定定高
+- scrollbar 高度设置 100%
+
+```vue
+<template>
+  <div style="height: 200px;">
+    <el-scrollbar style="height: 100%;" class="showScrollBar">
+    ...
+    </el-scrollbar>
+  </div>
+</template>
+
+<style lang="scss" scoped>
+.showScrollBar {
+  /deep/ .el-scrollbar__wrap {
+    overflow-x: hidden; // 做纵向滚动设置
+  }
+}
+</style>
+```
 
 #### table 表头与内容错位
 
