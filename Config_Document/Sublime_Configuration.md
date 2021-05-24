@@ -13,6 +13,30 @@
 7. 快捷文件名输入插件： AutoFileName
 8. md 插件： Markdown Editing
 9. md 生成 html (ctrl b):　MarkdownPreview
+10. 格式化代码插件：CodeFormatter
+
+    ```javascript
+    // 常用 html 配置。
+    {
+      "codeformatter_html_options":
+      {
+          "syntaxes": "html,blade,asp,xml",
+          "format_on_save": true,
+          "formatter_version": "bs4",
+          "indent_size": 2,
+          "indent_char": " ",
+          "indent_with_tabs": true,
+          "exception_on_tag_mismatch": false,
+          "expand_javascript": true,
+          "expand_tags": true,
+          "minimum_attribute_count": 2,
+          "first_attribute_on_new_line": false,
+          "reduce_empty_tags": true,
+          "reduce_whole_word_tags": true,
+          "custom_singletons": ""
+      },
+    }
+    ```
 
 ## 首选项配置
 

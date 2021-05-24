@@ -6,6 +6,7 @@
     - [`__proto__` 属性](#__proto__-属性)
     - [`prototype` 属性](#prototype-属性)
     - [`constructor` 属性](#constructor-属性)
+  - [冒泡与捕获](#冒泡与捕获)
   - [缓存](#缓存)
   - [异步相关](#异步相关)
     - [微任务、宏任务](#微任务宏任务)
@@ -69,6 +70,43 @@ Foo.prototype.__proto__ === Object.prototype
 - 通过 `__proto__` 属性到原型链中找,又由于`f1.__proto__ === Foo.prototype`
 - Foo.prototype 具有 constructor 属性 指向 Foo
 - 即 `(f1.__proto__.constructor===)f1.constructor === Foo` (不是本身拥有的,是继承而来的)
+
+## 冒泡与捕获
+
+- 前提：`element.addEventListener(event, function, useCapture)`
+  - useCapture:可选，布尔值，指定事件是否在捕获或冒泡阶段执行。
+    - 默认值：false，事件句柄在冒泡阶段执行
+    - true，事件句柄在捕获阶段执行
+
+- 执行顺序：先捕获，后冒泡，捕获从上到下，冒泡从下到上
+  - 即：捕获像石头沉入海底，冒泡则像气泡冒出水面
+
+```javascript
+<div>
+  <button>123</button>
+</div>
+<script>
+  var btn = document.querySelector('button');
+  var div = document.querySelector('div');
+  btn.addEventListener('click', function () {
+    console.log('bubble', 'btn');
+  }, false);
+  btn.addEventListener('click', function () {
+    console.log('capture', 'btn');
+  }, true);
+  div.addEventListener('click', function () {
+    console.log('bubble', 'div');
+  }, false);
+  div.addEventListener('click', function () {
+    console.log('capture', 'div');
+  }, true);
+</script>
+
+// capture div
+// capture btn
+// bubble btn
+// bubble div
+```
 
 ## 缓存
 
