@@ -54,6 +54,9 @@
       - [配置 stylelint css 验证](#配置-stylelint-css-验证)
     - [生产阶段 移除 console](#生产阶段-移除-console)
     - [配置 生产 开发的入口文件](#配置-生产-开发的入口文件)
+    - [ssr / 预渲染](#ssr--预渲染)
+      - [预渲染](#预渲染)
+      - [SSR](#ssr)
 
 ## Vue
 
@@ -912,3 +915,76 @@ module.exports = {
   }
 }
 ```
+
+### ssr / 预渲染
+
+#### 预渲染
+
+> 改善少数营销页面 SEO，将前端组件作为完全静态的站点，进行渲染。
+
+1. 将路由模式改为 history
+
+    ```javascript
+    const router = new VueRouter({
+      mode: 'history',
+      base: process.env.BASE_URL, // 默认 / ,即导出后所在的根目录，可设置多级目录
+      routes
+    })
+    ```
+
+2. 安装插件
+
+   - `npm i prerender-spa-plugin -D`
+
+3. 插件配置
+
+```javascript
+// vue.config.js
+const path = require('path')
+const PrerenderSPAPlugin = require('prerender-spa-plugin')
+// 调用渲染器
+const Renderer = PrerenderSPAPlugin.PuppeteerRenderer
+
+module.exports = {
+  configureWebpack: {
+    plugins: [
+      // 预渲染的配置
+      new PrerenderSPAPlugin({
+        // 静态资源目录
+        staticDir: path.join(__dirname, './dist'),
+        // 需要预加载的路由
+        routes: ['/', '/about'],
+        // 没有这个配置没有预编译
+        renderer: new Renderer({
+          // 注入信息
+          inject: {
+            foo: 'bar'
+          },
+          headless: false,
+          // 在项目入口使用 document.dispatchEvent(new Event('render-event'))
+          // 在 main.js 中 document.dispatchEvent(new Event('render-event'))，两者的事件名称要对应上
+          renderAfterDocumentEvent: 'render-event'
+        })
+      })
+    ]
+  }
+}
+
+// main.js
+
+new Vue({
+  router,
+  render: (h) => h(App),
+  // 添加事件调用
+  mounted() {
+    document.dispatchEvent(new Event('render-event'))
+  }
+}).$mount('#app')
+```
+
+#### SSR
+
+1. 安装相应的包文件
+
+   - `npm init --y`
+   - `npm i vue express vue-server-renderer -S`

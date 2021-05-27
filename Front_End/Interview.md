@@ -15,6 +15,18 @@
     - [组件化的理解](#组件化的理解)
     - [vue 设计原则](#vue-设计原则)
     - [MVC MVP MVVM](#mvc-mvp-mvvm)
+    - [vue 性能优化](#vue-性能优化)
+      - [路由懒加载设置](#路由懒加载设置)
+      - [keep-alive 缓存界面](#keep-alive-缓存界面)
+      - [使用 v-show 服用 dom](#使用-v-show-服用-dom)
+      - [尽量避免 v-for 和 v-if 同时使用](#尽量避免-v-for-和-v-if-同时使用)
+      - [长列表性能优化](#长列表性能优化)
+      - [事件的销毁](#事件的销毁)
+      - [图片的懒加载](#图片的懒加载)
+      - [第三方插件的按需引入](#第三方插件的按需引入)
+      - [无状态的组件标记为函数式组件(在 vue3 中删除，但是 在 vue2 中效率的提升不可忽视)](#无状态的组件标记为函数式组件在-vue3-中删除但是-在-vue2-中效率的提升不可忽视)
+      - [子组件分割](#子组件分割)
+      - [变量的本地化](#变量的本地化)
 
 ## vue
 
@@ -300,3 +312,161 @@ C   D   F   G
   - MVVM
     - 解决了耦合性的同时，解决了维护两者间映射关系的大量繁杂代码和dom操作代码（数据响应式机制，虚拟DOM）
     - 提升开发效率，代码可读性，以及性能优化
+
+### vue 性能优化
+
+#### 路由懒加载设置
+
+    ```javascript
+    const router= new VueRouter({
+      routes:[
+        {path:'/foo',component:()=> import('./Foo.vue')}
+      ]
+    })
+    ```
+
+#### keep-alive 缓存界面
+
+- 使用 exclude 、include 进行细分页面是否具体某一个页面是否需要缓存
+
+  ```vue
+  <template>
+    <div>
+      <keep-alive>
+        <router-view />
+      </keep-alive>
+    </div>
+  </template>
+  ```
+
+#### 使用 v-show 服用 dom
+
+```vue
+<template>
+  <div>
+    <!-- 此时用 v-show 服用 DOM，比 v-if 效果好 -->
+    <div v-show="value" class="on">
+      <heavy :n="10000" />
+    </div>
+
+    <div v-show="!value" class="off">
+      <heavy :n="10000" />
+    </div>
+  </div>
+</template>
+```
+
+#### 尽量避免 v-for 和 v-if 同时使用
+
+- 可以添加 一个计算属性 ，使用 filter 的方式 进行过滤后再进行模板的遍历
+
+#### 长列表性能优化
+
+- 如果 列表 是纯粹的数据展示，不会有任何的改变，就不需要做数据的响应式
+
+  - 使用  ES5 中的 Object.freeze()
+  - 也可以使用 Object.defineProperty() 进行定义，其中 configurable 为 false
+
+    ```javascript
+    data() {
+      return {
+        users: []
+      }
+    },
+    async created() {
+      const users = await axios.get('/api/users')
+      this.users = Object.freeze(users)
+    },
+    ```
+
+- 如果是大数据长列表，可采用虚拟滚动的方式，只渲染少部分区域的内容(第三方库)
+
+  - [vue-virtual-scroller](https://github.com/Akryum/vue-virtual-scroller#recyclescroller)
+  - [vue-virtual-scroll-list](https://github.com/tangbc/vue-virtual-scroll-list)
+
+    ```html
+    <recycle-scroller class="items" :items="items" :item-size="24">
+      <template v-slot="{ item }">
+        <FetchItemView :item="item" @vote="voteItem(item)" />
+      </template>
+    </recycle-scroller>
+    ```
+
+#### 事件的销毁
+
+> vue 在组件销毁的过程中会自动解绑它相关的所有的指令以及事件监听
+> 但仅限于组件本身的事件（写在组件上的事件监听都可以自动解绑）
+
+- 订阅（事件总线） 定时器 自定义事件监听 ... 在组件的 beforeDistroy 中手动移除，防止内存泄漏。
+
+#### 图片的懒加载
+
+- 对于图片过多的页面，为了加速页面加载速度，将页面内未出现在可是区域内的图片先做不加载，等到滚动到可视区域后再加载
+- [v-lazyload](https://github.com/hilongjw/vue-lazyload)
+
+    ```html
+    <img v-lazy="/static/img/zf.png">
+    ```
+
+#### 第三方插件的按需引入
+
+- element ui 第三方组件按需引入避免 体积过大
+
+```javascript
+import Vue from 'vue'
+import {Button,Select} from 'element-ui'
+
+Vue.use(Button)
+Vue.use(Select)
+```
+
+#### 无状态的组件标记为函数式组件(在 vue3 中删除，但是 在 vue2 中效率的提升不可忽视)
+
+```vue
+<template functional>
+  <div>
+    <div v-if="props.value" class="on"></div>
+    <div v-else class="off"></div>
+  </div>
+</template>
+
+<script>
+export default {
+  props:['value']
+}
+</script>
+```
+
+#### 子组件分割
+
+- 在子组件中有比较耗时的任务，将其切割成独立的子树，自己管理自己的渲染
+- 提升应用性能
+
+#### 变量的本地化
+
+```vue
+<template>
+  <div :style="{ opacity: start / 300 }">
+    {{ result }}
+  </div>
+</template>
+
+<script>
+export default {
+  props: ['start'],
+  computed: {
+    base() {
+      return 42
+    },
+    result() {
+      const base = this.base // 不要频繁引用this.base
+      let result = this.start
+      for (let i = 0; i < 1000; i++) {
+        result += heavy(base) // heavy 一个繁杂操作的工具方法
+      }
+      return result
+    }
+  }
+}
+</script>
+```

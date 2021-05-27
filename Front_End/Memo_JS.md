@@ -1,5 +1,7 @@
 # 补遗 (干货)
 
+> 依赖注入
+
 - [补遗 (干货)](#补遗-干货)
   - [原型链](#原型链)
     - [`prototype` / `__proto__` / `constructor` 属性](#prototype--__proto__--constructor-属性)
