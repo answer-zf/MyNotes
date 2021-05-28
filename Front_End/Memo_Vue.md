@@ -57,6 +57,8 @@
     - [ssr / 预渲染](#ssr--预渲染)
       - [预渲染](#预渲染)
       - [SSR](#ssr)
+        - [使用官网推荐 的 vue-server-renderer](#使用官网推荐-的-vue-server-renderer)
+        - [使用 nust.js(基于vue)](#使用-nustjs基于vue)
 
 ## Vue
 
@@ -984,7 +986,66 @@ new Vue({
 
 #### SSR
 
+##### 使用官网推荐 的 vue-server-renderer
+
 1. 安装相应的包文件
 
    - `npm init --y`
    - `npm i vue express vue-server-renderer -S`
+
+2. 新建 server.js 文件
+
+    ```javascript
+    const Vue = require('vue')
+    const express = require('express')()
+    // 创建服务端渲染器
+    const renderer = require('vue-server-renderer').createRenderer()
+
+    // 创建 vue 实例
+    const app = new Vue({
+      template: `<div>hello world</div>`,
+    })
+
+    // 服务端渲染的核心
+    // 通过 vue-server-renderer 插件中的renderToString()方法
+    // 将vue实例转换为字符串插入到html文件
+    express.get('/', (req, res) => {
+      renderer.renderToString(app, (err, html) => {
+        console.log(html)
+        if (err) {
+          return res.state(500).end('运行错误')
+        }
+        res.send(`
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+              <meta charset="UTF-8" />
+              <title>vue2 SSR 渲染</title>
+            </head>
+            <body>
+              ${html}
+            </body>
+            </html>
+        `)
+      })
+    })
+
+    express.listen(8111, () => {
+      console.log('服务器已启动...')
+    })
+    ```
+
+3. 运行 `node server.js`
+
+##### 使用 nust.js(基于vue)
+
+1. 安装
+
+   - vue-cli 脚手架
+   - 全局安装 create-nust-app（`npm i create-nuxt-app -g`）
+
+2. 创建项目
+
+   - `npx create-nuxt-app nust-ssr`
+
+3. 重要的配置文件 `nuxt.config.js`
