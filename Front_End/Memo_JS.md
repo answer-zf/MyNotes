@@ -16,7 +16,7 @@
     - [异步转同步](#异步转同步)
     - [常见的 微、宏任务面试题](#常见的-微宏任务面试题)
     - [结合 宏任务、微任务 加深 对 Promise 的理解](#结合-宏任务微任务-加深-对-promise-的理解)
-      - [Promise/A+ webkit](#promisea-webkit)
+      - [Promise/A+规范 与 webkit 中的 Promise 的差异](#promisea规范-与-webkit-中的-promise-的差异)
   - [内存泄漏](#内存泄漏)
     - [垃圾回收](#垃圾回收)
       - [标记清除](#标记清除)
@@ -278,7 +278,7 @@ new Promise((resolve, reject) => {
 // 外部第二个then
 ```
 
-#### Promise/A+ webkit
+#### Promise/A+规范 与 webkit 中的 Promise 的差异
 
 > 由于 ES6 中的 Promise 需要考虑向下兼容的问题，一般开发中 使用 npm i promise引入，而非使用 内核的 Promise
 
