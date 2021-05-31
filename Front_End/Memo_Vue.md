@@ -7,7 +7,6 @@
       - [dom操作](#dom操作)
       - [nextTick](#nexttick)
       - [ref/reactive](#refreactive)
-    - [Vue2](#vue2)
     - [watch的依赖追踪](#watch的依赖追踪)
       - [对象属性监听](#对象属性监听)
     - [在created时获取dom方法(nextTick)](#在created时获取dom方法nexttick)
@@ -135,8 +134,6 @@ nextTick(()=>{
 
 - ref 定义基本数据类型 使用 变量名.value 获取 (watchEffect)
 - reactive 定义复杂的数据类型 直接获取 (watch)
-
-### Vue2
 
 ### watch的依赖追踪
 
@@ -569,6 +566,20 @@ for (let [key, value] of entries(obj)) {
 - map()
 
   - 创建一个新数组，新数组中的元素是调用一次提供的函数后的返回（对每个元素的操作后的返回）
+
+```javascript
+let arr=[2,4,1,5,3,1];
+
+let res1=arr.map(function (item,index,array) {
+  // return array[index]; //用这种方法也可以获取到当前处理的元素
+  return item>1;
+});
+
+let res2=arr.filter(function (item,index,array) {
+  return item>1;
+});
+console.log(res1,res2); //[ true, true, false, true, true, false ] [ 2, 4, 5, 3 ]
+```
 
 - 判断 数组的所有成员是否满足指定的条件
 
@@ -1049,3 +1060,109 @@ new Vue({
    - `npx create-nuxt-app nust-ssr`
 
 3. 重要的配置文件 `nuxt.config.js`
+
+4. 路由
+
+   - nuxt 路由自动生成
+
+    ```vue
+    <!-- 主文件 --> 
+    <template>
+      <div class="container">
+        <h2>nuxt start</h2>
+
+        <ul>
+          <li> <nuxt-link :to="{ name: 'about' }"> about </nuxt-link> </li>
+          <li> <nuxt-link :to="{ name: 'user', params: { id: 123 } }"> user </nuxt-link> </li>
+          <li> <a href="/user/zf"> user - 动态id</a> </li>
+        </ul>
+      </div>
+    </template>
+    <!-- /pages/user/index.vue --> 
+    <template>
+      <div class="container">
+        <h2>user</h2>
+        <p>id:{{ $route.params.id }}</p>
+        <nuxt-link :to="{ name: 'index' }">
+          to home
+        </nuxt-link>
+      </div>
+    </template>
+
+    <!-- 使用动态路由，文件必须以下划线的方式命名，名字和文件内的键对应 -->
+    <!-- /pages/user/_id.vue --> 
+    <template>
+      <div class="container">
+        <h2>user - 动态id</h2>
+        <p>id:{{ $route.params.id }}</p>
+        <nuxt-link :to="{ name: 'index' }">
+          to home
+        </nuxt-link>
+      </div>
+    </template>
+
+    <script>
+    export default {
+      validate({ params }) {
+        return params.id === 'zf'
+      },
+    }
+    </script>
+    ```
+
+5. 目录
+
+   - `static`中的文件不会被打包构建处理
+   - 会被映射到应用的目录之下
+
+6. 异步数据
+
+```vue
+<!-- 
+static\temData.json 模拟数据
+{
+  "code": 0,
+  "msg": "临时数据",
+  "data": {
+    "title": "zzf",
+    "desc": "ddddf"
+  }
+}
+-->
+
+<template>
+  <div class="container">
+    <h2>user</h2>
+    <p>id:{{ $route.params.id }}</p>
+    <p>data {{ zf }}</p>
+    <p>asyncData {{ info.title }}</p>
+    <nuxt-link :to="{ name: 'index' }">
+      to home
+    </nuxt-link>
+  </div>
+</template>
+
+<script>
+import axios from 'axios'
+export default {
+  asyncData() {
+    return axios({
+      methods: 'get',
+      url: '/temData.json',
+    }).then(_data => {
+      return { info: _data.data.data }
+    })
+  },
+  data() {
+    return {
+      zf: 'zf',
+    }
+  },
+  head() {
+    return {
+      title: this.info.title,
+    }
+  },
+}
+</script>
+```

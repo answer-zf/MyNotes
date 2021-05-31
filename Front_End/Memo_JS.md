@@ -15,6 +15,8 @@
     - [async、await(ES7)](#asyncawaites7)
     - [异步转同步](#异步转同步)
     - [常见的 微、宏任务面试题](#常见的-微宏任务面试题)
+    - [结合 宏任务、微任务 加深 对 Promise 的理解](#结合-宏任务微任务-加深-对-promise-的理解)
+      - [Promise/A+ webkit](#promisea-webkit)
   - [内存泄漏](#内存泄漏)
     - [垃圾回收](#垃圾回收)
       - [标记清除](#标记清除)
@@ -30,6 +32,7 @@
       - [使用element](#使用element)
       - [使用第三方组件](#使用第三方组件)
   - [admin 框架优化点](#admin-框架优化点)
+  - [rem / em](#rem--em)
 
 ## 原型链
 
@@ -225,6 +228,122 @@ console.log('script end')
 // 原因：浏览器的Event loop是在HTML5中定义的规范，而node中则由libuv库实现
 ```
 
+### 结合 宏任务、微任务 加深 对 Promise 的理解
+
+> Promise 中有三个状态 Pendding（等待） Fulfiiled（成功） Rejected（失败）
+> 状态 只能 Pendding -> Fulfiiled / Pendding -> Rejected ,一旦状态发生改变，不能做二次修改
+
+```javascript
+// 深入理解 Promise
+new Promise((resolve, reject) => {
+  console.log("外部promise");
+  resolve();
+})
+  .then(() => {
+    console.log("外部第一个then");
+    new Promise((resolve, reject) => {
+      console.log("内部promise");
+      resolve();
+    })
+      .then(() => { // 与 内部第一个then2 为同一个时间节点的 微任务，即这两then,某种意义上说，为同步
+        console.log("内部第一个then");
+      })
+      .then(() => { // 与 内部第二个then2 为同一个时间节点的 微任务，即这两then,某种意义上说，为同步
+        console.log("内部第二个then");
+      });
+    return new Promise((resolve, reject) => { // 此时 外部第二个 then 需要等待 内部promise2 的结果
+      console.log("内部promise2");
+      resolve();
+    })
+      .then(() => {
+        console.log("内部第一个then2");
+      })
+      .then(() => {
+        console.log("内部第二个then2");
+      });
+  })
+  .then(() => {
+    console.log("外部第二个then");
+  });
+
+// 输出结果：
+// 外部promise
+// 外部第一个then
+// 内部promise
+// 内部promise2
+// 内部第一个then
+// 内部第一个then2
+// 内部第二个then
+// 内部第二个then2
+// 外部第二个then
+```
+
+#### Promise/A+ webkit
+
+> 由于 ES6 中的 Promise 需要考虑向下兼容的问题，一般开发中 使用 npm i promise引入，而非使用 内核的 Promise
+
+```javascript
+// 在node 中 以引入的方式 拿到 Promise
+// 在浏览器中测试无需使用 或者 在node中不引入，也能达到浏览器测试效果
+// const Promise = require('promise')
+
+new Promise((resolve, reject) => {
+  console.log('外部promise');
+  resolve();
+})
+  .then(() => {
+    console.log('外部第一个then');
+    new Promise((resolve, reject) => {
+      console.log('内部promise');
+      resolve();
+    })
+      .then(() => {
+        console.log('内部第一个then');
+        return Promise.resolve();
+      })
+      .then(() => {
+        console.log('内部第二个then');
+      })
+  })
+  .then(() => {
+    console.log('外部第二个then');
+  })
+  .then(() => {
+    console.log('外部第三个then');
+  })
+  .then(() => {
+    console.log('外部第四个then');
+  })
+  .then(() => {
+    console.log('外部第五个then');
+  })
+// 使用 引入的 promise 输出结果：
+// 外部promise
+// 外部第一个then
+// 内部promise
+// 内部第一个then
+// 外部第二个then
+// 内部第二个then
+// 外部第三个then
+// 外部第四个then
+// 外部第五个then
+
+// 使用 webkit 内核浏览器 输出结果
+// 外部promise
+// 外部第一个then
+// 内部promise
+// 内部第一个then
+// 外部第二个then
+// 外部第三个then
+// 外部第四个then
+// 内部第二个then
+// 外部第五个then
+```
+
+- 原因：webkit 中 `return promise.resolve()` 进行了如下步骤，
+- 需要先 将 promise -> resolve  (这是第一次同步损耗,即外层进行了一次promise消耗)
+- 再将 return promise中的 return `return valuePromise(value)`(promise.resolve()中的源码返回) (这是第二次同步损耗)
+  
 ## 内存泄漏
 
 ### 垃圾回收
@@ -597,4 +716,56 @@ let route=[
 }]
 router.addRoutes(route);
 export default router
+```
+
+## rem / em
+
+> em作为font-size的单位时，其代表父元素的字体大小，em作为其他属性单位时，代表自身字体大小 —— MDN
+> 弊端：牵一发·动全身
+
+```vue
+<template>
+  <div class="p1">
+    <div class="s1">1</div>
+    <div class="s2">1</div>
+  </div>
+  <div class="p2">
+    <div class="s5">1</div>
+    <div class="s6">1</div>
+  </div>
+</template>
+
+<style>
+.p1 {font-size: 16px; line-height: 32px;}
+.s1 {font-size: 2em;}
+.s2 {font-size: 2em; line-height: 2em;}
+
+/*
+p1：font-size: 16px; line-height: 32px
+s1：font-size: 32px; line-height: 32px
+s2：font-size: 32px; line-height: 64px 
+*/
+
+.p2 {font-size: 16px; line-height: 2;}
+.s5 {font-size: 2em;}
+.s6 {font-size: 2em; line-height: 2em;}
+
+/*
+p2：font-size: 16px; line-height: 32px
+s5：font-size: 32px; line-height: 64px
+s6：font-size: 32px; line-height: 64px 
+*/
+</style>
+```
+
+> rem作用于非根元素时，相对于根元素字体大小；rem作用于根元素字体大小时，相对于其出初始字体大小 —— MDN
+
+```html
+<style>
+  /* 作用于根元素，相对于原始大小（16px），所以html的font-size为32px*/
+  html { font-size: 2rem }
+
+  /* 作用于非根元素，相对于根元素字体大小，所以为64px */
+  p { font-size: 2rem }
+</style>
 ```
