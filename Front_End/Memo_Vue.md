@@ -24,6 +24,8 @@
       - [scrollbar 的使用](#scrollbar-的使用)
       - [table 表头与内容错位](#table-表头与内容错位)
       - [国际化table表头实时更新问题](#国际化table表头实时更新问题)
+      - [关于 变量命名引起的 异常问题](#关于-变量命名引起的-异常问题)
+        - [valid](#valid)
     - [Vuex](#vuex)
     - [import/require](#importrequire)
   - [JS](#js)
@@ -462,6 +464,25 @@ body .el-table colgroup.gutter{
 
 - 当使用 element 表格组件进行二次封装时，若 i18n 不更新，需要在表头添加`:header-cell-style="{}"`
   - 使用自定义表头样式 覆盖原有样式，实现国际化组件的实时更新
+
+#### 关于 变量命名引起的 异常问题
+
+##### valid
+
+```javascript
+// <el-form ref="dataForm" :model="dataForm">
+
+// 在进行 表单验证的时候 使用 valid 命名变量，会报异常 not define
+// const valid = await this.$refs.dataForm.validate().catch(r => r)
+const res = await this.$refs.dataForm.validate().catch(r => r)
+// res为false表示验证不通过
+if (res == false) {
+  return this.$message.warning({
+    message: '请先完善必输项',
+    duration: 1200 // 信息提示框的显示时长
+  })
+}
+```
 
 ### Vuex
 

@@ -317,13 +317,13 @@ C   D   F   G
 
 #### 路由懒加载设置
 
-    ```javascript
-    const router= new VueRouter({
-      routes:[
-        {path:'/foo',component:()=> import('./Foo.vue')}
-      ]
-    })
-    ```
+```javascript
+const router= new VueRouter({
+  routes:[
+    {path:'/foo',component:()=> import('./Foo.vue')}
+  ]
+})
+```
 
 #### keep-alive 缓存界面
 
