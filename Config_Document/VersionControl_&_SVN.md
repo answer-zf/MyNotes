@@ -24,7 +24,7 @@ SVN 全称 Apache Subversion，是一个开放源代码的集中式版本管理�
 
 ## SVN 交互协作流程
 
-![svn交互流程](http://images.dorc.top/blog/Config_Document/svn.png)
+![svn交互流程](http://localhost:9710/blog/Config_Document/svn.png)
 
 ## 集中式
 

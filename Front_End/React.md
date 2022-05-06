@@ -490,7 +490,7 @@ export default function CmtItem(props) {
 
     -   componentDidUpdate：组件将要被卸载，组件还可以正常使用
 
-![React-LifeCycle.jpg](http://images.dorc.top/blog/React/React-LifeCycle.jpg)
+![React-LifeCycle.jpg](http://localhost:9710/blog/React/React-LifeCycle.jpg)
 
 -   defaultProps
 
@@ -498,7 +498,7 @@ export default function CmtItem(props) {
 
 **React生命周期的回调函数总结**
 
-![React-LifeCycle-Table](http://images.dorc.top/blog/React/React-LifeCycle-Table.png)
+![React-LifeCycle-Table](http://localhost:9710/blog/React/React-LifeCycle-Table.png)
 
 **组件生命周期的执行顺序：**
 
@@ -978,7 +978,7 @@ componentWillMount() {
         <Image
           style={{width: 64, height: 64}}
           source={{
-            uri: 'http://images.dorc.top/blog/blog-logo.png',
+            uri: 'http://localhost:9710/blog/blog-logo.png',
           }}></Image>
         ```
 

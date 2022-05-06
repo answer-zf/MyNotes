@@ -14,11 +14,11 @@
 
 #### 备忘
 
-- [Git 常用操作](http://images.dorc.top/blog/Memo_Pdf/GIT_LINUX.pdf)
+- [Git 常用操作](http://localhost:9710/blog/Memo_Pdf/GIT_LINUX.pdf)
 
-- [MySQL 基础](http://images.dorc.top/blog/Memo_Pdf/MySQL_BASIC.pdf)
-- [MySQL 数据类型](http://images.dorc.top/blog/Memo_Pdf/MySQL_DATATYPE.pdf)
-- [MySQL 进阶](http://images.dorc.top/blog/Memo_Pdf/MySQL_ADVANCE.pdf)
+- [MySQL 基础](http://localhost:9710/blog/Memo_Pdf/MySQL_BASIC.pdf)
+- [MySQL 数据类型](http://localhost:9710/blog/Memo_Pdf/MySQL_DATATYPE.pdf)
+- [MySQL 进阶](http://localhost:9710/blog/Memo_Pdf/MySQL_ADVANCE.pdf)
 
 ### 小试牛刀的 Node
 

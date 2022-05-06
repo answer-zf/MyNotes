@@ -1,5 +1,5 @@
 _pic_
-![Python-Net_DeadLock](http://images.dorc.top/blog/Python/Python-Net_DeadLock.png)
+![Python-Net_DeadLock](http://localhost:9710/blog/Python/Python-Net_DeadLock.png)
 
 _annotation_
 \################### tcp_server ###################

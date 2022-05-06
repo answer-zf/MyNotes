@@ -140,7 +140,7 @@ exit
 
 - 查询数据
 
-  ![MongoDB_cmd](http://images.dorc.top/blog/Back_End/MongoDB_cmd.png)
+  ![MongoDB_cmd](http://localhost:9710/blog/Back_End/MongoDB_cmd.png)
 
 ## 在 Node 中操作 MongoDB 数据库
 

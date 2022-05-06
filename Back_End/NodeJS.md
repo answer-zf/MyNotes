@@ -1149,7 +1149,7 @@ app.use(
 
 http://expressjs.com/en/guide/using-middleware.html
 
-![1-130I0234953631](http://images.dorc.top/blog/Back_End/1-130I0234953631.png)
+![1-130I0234953631](http://localhost:9710/blog/Back_End/1-130I0234953631.png)
 
 中间件：用来处理 http 请求的一个具体的环节（可能要执行某个具体的处理函数）
 中间件一般都是通过修改 req 或者 res 对象来为后续的处理提供便利的使用

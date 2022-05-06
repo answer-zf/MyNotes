@@ -143,7 +143,7 @@
 
     -   待计数为0时，对象自动释放。
 
-    ![Python_RC](http://images.dorc.top/blog/Python/Python_RC.jpg)
+    ![Python_RC](http://localhost:9710/blog/Python/Python_RC.jpg)
 
 ### 语句
 
@@ -436,7 +436,7 @@ print(list02[0])
 
 **内存图**
 
-![Python-MemoryAllocationMap-\_List01](http://images.dorc.top/blog/Python/Python-MemoryAllocationMap-_List01.jpg)
+![Python-MemoryAllocationMap-\_List01](http://localhost:9710/blog/Python/Python-MemoryAllocationMap-_List01.jpg)
 
 ```python
 list01 = [0, 1]
@@ -447,7 +447,7 @@ print(list02[0])
 
 **内存图**
 
-![Python-MemoryAllocationMap-\_List02](http://images.dorc.top/blog/Python/Python-MemoryAllocationMap-_List02.jpg)
+![Python-MemoryAllocationMap-\_List02](http://localhost:9710/blog/Python/Python-MemoryAllocationMap-_List02.jpg)
 
 ```python
 list01 = [0, 1]
@@ -458,7 +458,7 @@ print(list02[0])
 
 **内存图**
 
-![Python-MemoryAllocationMap-\_List03](http://images.dorc.top/blog/Python/Python-MemoryAllocationMap-_List03.jpg)
+![Python-MemoryAllocationMap-\_List03](http://localhost:9710/blog/Python/Python-MemoryAllocationMap-_List03.jpg)
 
 ##### 深拷贝和浅拷贝
 
@@ -467,7 +467,7 @@ print(list02[0])
 
 **浅拷贝内存图**
 
-![Python-MemoryAllocationMap-\_List04](http://images.dorc.top/blog/Python/Python-MemoryAllocationMap-_List04.jpg)
+![Python-MemoryAllocationMap-\_List04](http://localhost:9710/blog/Python/Python-MemoryAllocationMap-_List04.jpg)
 
 **深拷贝使用**
 
@@ -519,7 +519,7 @@ print(list03)
 -   将原数据拷贝过来
 -   替换表头地址
 
-![Python-MemoryAllocationMap-\_List05](http://images.dorc.top/blog/Python/Python-MemoryAllocationMap-_List05.jpg)
+![Python-MemoryAllocationMap-\_List05](http://localhost:9710/blog/Python/Python-MemoryAllocationMap-_List05.jpg)
 
 #### 元组 tuple
 
@@ -537,7 +537,7 @@ print(list03)
 
 #### 字典 dict
 
-![Python-MemoryAllocationMap-\_List06](http://images.dorc.top/blog/Python/Python-MemoryAllocationMap-_List06.jpg)
+![Python-MemoryAllocationMap-\_List06](http://localhost:9710/blog/Python/Python-MemoryAllocationMap-_List06.jpg)
 
 1.  定义
 
@@ -863,7 +863,7 @@ print(get_prime_number(1, 101))
         print("number01: " + str(number01))
         ```
 
-        ![Python-MemoryAllocationMap-\_Fun01](http://images.dorc.top/blog/Python/Python-MemoryAllocationMap-_Fun01.jpg)
+        ![Python-MemoryAllocationMap-\_Fun01](http://localhost:9710/blog/Python/Python-MemoryAllocationMap-_Fun01.jpg)
 
         **可变对象传参**
 
@@ -877,7 +877,7 @@ print(get_prime_number(1, 101))
         print("list_number[0]: " + str(list_number[0]))
         ```
 
-        ![Python-MemoryAllocationMap-\_Fun02](http://images.dorc.top/blog/Python/Python-MemoryAllocationMap-_Fun02.jpg)
+        ![Python-MemoryAllocationMap-\_Fun02](http://localhost:9710/blog/Python/Python-MemoryAllocationMap-_Fun02.jpg)
 
 #### 作用域 LEGB
 
@@ -1063,7 +1063,7 @@ w01 = Car("bm", 12, 10000)
 w01.travel()
 ```
 
-![Python-MemoryAllocationMap-\_OOP01](http://images.dorc.top/blog/Python/Python-MemoryAllocationMap-_OOP01.jpg)
+![Python-MemoryAllocationMap-\_OOP01](http://localhost:9710/blog/Python/Python-MemoryAllocationMap-_OOP01.jpg)
 
 3.  类成员
 
@@ -1125,7 +1125,7 @@ i02 = ICBC("cfzhihang", 100000)
 ICBC.print_total_money()
 ```
 
-![Python-MemoryAllocationMap-\_OOP02](http://images.dorc.top/blog/Python/Python-MemoryAllocationMap-_OOP02.jpg)
+![Python-MemoryAllocationMap-\_OOP02](http://localhost:9710/blog/Python/Python-MemoryAllocationMap-_OOP02.jpg)
 
 4.  静态方法
 
@@ -2055,7 +2055,7 @@ def __iadd__(self, other):
 
 4.  设计思想：
 
-    ![Python-MemoryAllocationMap-\_OOP03](http://images.dorc.top/blog/Python/Python-MemoryAllocationMap-_OOP03.jpg)
+    ![Python-MemoryAllocationMap-\_OOP03](http://localhost:9710/blog/Python/Python-MemoryAllocationMap-_OOP03.jpg)
 
 ### 生成器 generator
 
@@ -2630,7 +2630,7 @@ def __iadd__(self, other):
     -   只能在一端进行数据操作
     -   栈模型具有后进先出（的规律）
 
-        ![Python-Net_stack](http://images.dorc.top/blog/Python/Python-Net_stack.jpg)
+        ![Python-Net_stack](http://localhost:9710/blog/Python/Python-Net_stack.jpg)
 
 3.  程序实现：
 
@@ -2812,7 +2812,7 @@ def __iadd__(self, other):
     -   队列只能在队头和队尾进行数据操作。
     -   栈模型具有先进先出/后进后出的规律
 
-        ![Python-Net_queue](http://images.dorc.top/blog/Python/Python-Net_queue.jpg)
+        ![Python-Net_queue](http://localhost:9710/blog/Python/Python-Net_queue.jpg)
 
 3.  程序实现
 
@@ -2889,7 +2889,7 @@ def __iadd__(self, other):
 
     -   树（Tree）是n（n>=0）个节点的有限集合T，它满足两个条件：有且仅有一个特定的称为根（Root）的节点，其余的节点可以分为m（m>=0）个互不相交的有限集合T1.T2 ... .Tm,其中每一个集合又是一棵树，并称为其根的子树（Subtree）。
 
-        ![Python-Net_tree01](http://images.dorc.top/blog/Python/Python-Net_tree01.jpg)
+        ![Python-Net_tree01](http://localhost:9710/blog/Python/Python-Net_tree01.jpg)
 
 2.  基本概念：
 
@@ -2900,7 +2900,7 @@ def __iadd__(self, other):
     -   节点的层数等于父节点的层数加一，根节点的层数定义为一，树中节点层数的最大值称为该树的高度或深度。
     -   m(m>=0)棵互不相交的树的集合称为森林，树去掉根节点就成为森林，森林加上一个新的根节点就成为树。
 
-        ![Python-Net_tree02](http://images.dorc.top/blog/Python/Python-Net_tree02.jpg)
+        ![Python-Net_tree02](http://localhost:9710/blog/Python/Python-Net_tree02.jpg)
 
 #### 二叉树
 
@@ -2922,7 +2922,7 @@ def __iadd__(self, other):
     -   满二叉树： 深度为k(k>=1)时有 2 的 k 次方 -1 个节点的二叉树。
     -   完全二叉树：只有最下面两层有度数小于2的节点，且最下面一层的叶节点集中在最左边的若干位置上。
 
-        ![Python-Net_tree03](http://images.dorc.top/blog/Python/Python-Net_tree03.jpg)
+        ![Python-Net_tree03](http://localhost:9710/blog/Python/Python-Net_tree03.jpg)
 
 4.  遍历：沿某条搜索路径周游二叉树，对树中的每个节点访问一次且仅访问一次。
 
@@ -3171,7 +3171,7 @@ def __iadd__(self, other):
 
         **随着问题规模n 增大，算法执行时间增长率**
 
-        ![Python-Net_algorithm](http://images.dorc.top/blog/Python/Python-Net_algorithm.png)
+        ![Python-Net_algorithm](http://localhost:9710/blog/Python/Python-Net_algorithm.png)
 
 ### 排序和查找
 
@@ -3183,19 +3183,19 @@ def __iadd__(self, other):
 
     -   冒泡排序(Bubble Sort)：它重复地走访过要排序的元素列，依次比较两个相邻的元素，如果顺序（如从大到小、首字母从Z到A）错误就把他们交换过来。走访元素的工作是重复地进行直到没有相邻元素需要交换，也就是说该元素列已经排序完成。
 
-        ![Python-Net_Sort_Bubble](http://images.dorc.top/blog/Python/Python-Net_Sort_Bubble.gif)
+        ![Python-Net_Sort_Bubble](http://localhost:9710/blog/Python/Python-Net_Sort_Bubble.gif)
 
     -   选择排序(Selection Sort)：首先在未排序序列中找到最小（大）元素，存放到排序序列的起始位置，然后，再从剩余未排序元素中继续寻找最小（大）元素，然后放到已排序序列的末尾。以此类推，直到所有元素均排序完毕。
 
-        ![Python-Net_Sort_Selection](http://images.dorc.top/blog/Python/Python-Net_Sort_Selection.gif)
+        ![Python-Net_Sort_Selection](http://localhost:9710/blog/Python/Python-Net_Sort_Selection.gif)
 
     -   插入排序(Insertion Sort)：在待排序的元素中，假设前面n-1(其中n>=2)个数已经是排好顺序的，现将第n个数插到前面已经排好的序列中，然后找到合适自己的位置，使得插入第n个数的这个序列也是排好顺序的。按照此法对所有元素进行插入，直到整个序列排为有序的过程，称为插入排序
 
-        ![Python-Net_Sort_Insertion](http://images.dorc.top/blog/Python/Python-Net_Sort_Insertion.gif)
+        ![Python-Net_Sort_Insertion](http://localhost:9710/blog/Python/Python-Net_Sort_Insertion.gif)
 
     -   快速排序（Quick Sort）：从数列中挑出一个元素，称为“基准”（pivot），重新排序数列，所有元素比基准值小的摆放在基准前面，所有元素比基准值大的摆在基准的后面（相同的数可以摆在任一边）.在这个分区退出之后，该基准就处于数列的中间位置，这个称为分区（partition）操作。递归的把小于基准值元素的子数列和大于基准值元素的子数列排序。
 
-        ![Python-Net_Sort_Quick](http://images.dorc.top/blog/Python/Python-Net_Sort_Quick.gif)
+        ![Python-Net_Sort_Quick](http://localhost:9710/blog/Python/Python-Net_Sort_Quick.gif)
 
         ```py
             class Sort:
@@ -3517,7 +3517,7 @@ _通过with方法可以不用close().因为with生成的对象在语句块结束
 
 背景 ： 实际工作中七层模型太过细致，难以实践，逐渐演化为实际工作中应用的四层
 
-![Python-Net_Net_Base01](http://images.dorc.top/blog/Python/Python-Net_Net_Base01.png)
+![Python-Net_Net_Base01](http://localhost:9710/blog/Python/Python-Net_Net_Base01.png)
 
 #### 数据传输过程
 
@@ -3525,7 +3525,7 @@ _通过with方法可以不用close().因为with生成的对象在语句块结束
 2.  发送的消息经过多个节点(交换机,路由器)传输,最终到达目标主机
 3.  目标主机由物理层逐层解析首部消息包,最终到应用程序呈现消息。
 
-![Python-Net_Net_Base02](http://images.dorc.top/blog/Python/Python-Net_Net_Base02.png)
+![Python-Net_Net_Base02](http://localhost:9710/blog/Python/Python-Net_Net_Base02.png)
 
 #### 网络协议
 
@@ -3587,7 +3587,7 @@ _通过with方法可以不用close().因为with生成的对象在语句块结束
         -   服务器接收到请求后返回报文进行确认
         -   客户端得到回复发送最终连接报文进行连接
 
-        ![Python-Net_ThreeHandshake](http://images.dorc.top/blog/Python/Python-Net_ThreeHandshake.png)
+        ![Python-Net_ThreeHandshake](http://localhost:9710/blog/Python/Python-Net_ThreeHandshake.png)
 
 
     2.  四次挥手 （断开连接的过程）
@@ -3596,7 +3596,7 @@ _通过with方法可以不用close().因为with生成的对象在语句块结束
         -   被动方准备就绪后，再次发送报文，表示可以断开
         -   主动方收到确认，最终发送报文断开连接
 
-        ![Python-Net_FourWave](http://images.dorc.top/blog/Python/Python-Net_FourWave.png)
+        ![Python-Net_FourWave](http://localhost:9710/blog/Python/Python-Net_FourWave.png)
 
 3.  适用情况：对数据传输可靠性要求高，传输文件大。比如：文件传输，网页访问等
 
@@ -3625,7 +3625,7 @@ _通过with方法可以不用close().因为with生成的对象在语句块结束
 
 ###### 服务端流程
 
-![Python-Net_TCP_Client](http://images.dorc.top/blog/Python/Python-Net_TCP_Server.png)
+![Python-Net_TCP_Client](http://localhost:9710/blog/Python/Python-Net_TCP_Server.png)
 
 1.  创建套接字对象
 
@@ -3703,7 +3703,7 @@ _通过with方法可以不用close().因为with生成的对象在语句块结束
 
 ###### 客户端流程
 
-![Python-Net_TCP_Client](http://images.dorc.top/blog/Python/Python-Net_TCP_Client.png)
+![Python-Net_TCP_Client](http://localhost:9710/blog/Python/Python-Net_TCP_Client.png)
 
 1.  创建套接字
 
@@ -3911,7 +3911,7 @@ _通过with方法可以不用close().因为with生成的对象在语句块结束
 
         _SOL_SOCKET option 属性_
 
-        ![Python-Net_setsockopt](http://images.dorc.top/blog/Python/Python-Net_setsockopt.png)
+        ![Python-Net_setsockopt](http://localhost:9710/blog/Python/Python-Net_setsockopt.png)
 
 _应用：上传文件_
 
@@ -4021,7 +4021,7 @@ _应用：上传文件_
     4.  服务端将响应内容以http响应格式发送给浏览器
     5.  浏览器接收到响应内容,解析展示
 
-    ![Python-Net_Web_Access](http://images.dorc.top/blog/Python/Python-Net_Web_Access.jpg)
+    ![Python-Net_Web_Access](http://localhost:9710/blog/Python/Python-Net_Web_Access.jpg)
 
 ###### HTTP请求 request
 
@@ -4109,7 +4109,7 @@ _http server_
             -   功能：生成结构化对象
             -   参数：format 定制的数据结构
 
-                ![Python-Net_Struct](http://images.dorc.top/blog/Python/Python-Net_Struct.png)
+                ![Python-Net_Struct](http://localhost:9710/blog/Python/Python-Net_Struct.png)
 
         -   st.pack(v1,v2,v3...)
             -   功能：将一组数据按照指定格式打包转换为 bytes
@@ -4229,14 +4229,14 @@ _http server_
         -   运行态： 进程占有cpu时间片正在运行
         -   阻塞态： 进程处理阻塞暂停状态，让出cpu
 
-        ![Python-Net_3State](http://images.dorc.top/blog/Python/Python-Net_3State.png)
+        ![Python-Net_3State](http://localhost:9710/blog/Python/Python-Net_3State.png)
 
     -   五态 （增加新建和终止）：
 
         -   新建：创建进程获取资源
         -   终止：进程结束释放资源
 
-        ![Python-Net_5State](http://images.dorc.top/blog/Python/Python-Net_5State.png)
+        ![Python-Net_5State](http://localhost:9710/blog/Python/Python-Net_5State.png)
 
     -   查看状态命令 ： ps  -aux => STAT 列
 
@@ -4881,7 +4881,7 @@ _http server_
                 -   ctype  共享内存类型  'i'  'f'  'c'(字符，只能存字节串)
                 -   data   共享内存初始数据
 
-                ![Python-Net_Ctype](http://images.dorc.top/blog/Python/Python-Net_Ctype.png)
+                ![Python-Net_Ctype](http://localhost:9710/blog/Python/Python-Net_Ctype.png)
 
             -   obj.value 对该属性修改查看即共享内存读写
 
@@ -5138,11 +5138,11 @@ _http server_
 
         -   同步：同步是一种协作关系，为完成操作，多进程或者线程间形成一种协调，按照必要的步骤执行操作。
 
-        ![Python-Net_Synchronize](http://images.dorc.top/blog/Python/Python-Net_Synchronize.png)
+        ![Python-Net_Synchronize](http://localhost:9710/blog/Python/Python-Net_Synchronize.png)
 
         -   互斥：互斥是一种制约关系，当一个进程或者线程抢占到资源时进行加锁处理，其他进程线程就无法操作资源，直到解锁后才能操作
 
-        ![Python-Net_Mutex](http://images.dorc.top/blog/Python/Python-Net_Mutex.png)
+        ![Python-Net_Mutex](http://localhost:9710/blog/Python/Python-Net_Mutex.png)
 
     4.  线程互斥方法
 
@@ -5223,7 +5223,7 @@ _http server_
 
                     -   死锁是指两个或两个以上的线程在执行过程中,由于竞争资源或者由于彼此通信而造成的一种阻塞的现象,若无外力作用,它们都将无法推进下去。此时称系统处于死锁状态或系统产生了死锁。
 
-                    ![Python-Net_DeadLock](http://images.dorc.top/blog/Python/Python-Net_DeadLock.png)
+                    ![Python-Net_DeadLock](http://localhost:9710/blog/Python/Python-Net_DeadLock.png)
 
                 2.  死锁产生条件
 
@@ -6523,7 +6523,7 @@ _http server_
 
 ### Python 的 re模块
 
-![Python-Net_RE](http://images.dorc.top/blog/Python/Python-Net_RE.png)
+![Python-Net_RE](http://localhost:9710/blog/Python/Python-Net_RE.png)
 
 1.  regex = re.compile(pattern,flags = 0)
 
@@ -6826,7 +6826,7 @@ _数据量更加庞大，更加侧重数据分析和数据挖掘，供企业决�
         -   浮点类型（近似值）- FLOAT，DOUBLE
         -   比特值类型 - BIT
 
-        ![Python-\_MySQL_Number](http://images.dorc.top/blog/Python/Python-MySQL_Number.png)
+        ![Python-\_MySQL_Number](http://localhost:9710/blog/Python/Python-MySQL_Number.png)
 
         -   对于精度比较高的东西,比如 money,用 decimal类型提高精度减少误差。列的声明语法是 DECIMAL(M,D)。
             -   M是数字的最大位数(精度)。其范围为1~65,M的默认值是10
@@ -6841,7 +6841,7 @@ _数据量更加庞大，更加侧重数据分析和数据挖掘，供企业决�
         -   BLOB 和 TEXT 类型
         -   ENUM 类型和 SET 类型
 
-        ![Python-\_MySQL_String](http://images.dorc.top/blog/Python/Python-MySQL_String.png)
+        ![Python-\_MySQL_String](http://localhost:9710/blog/Python/Python-MySQL_String.png)
 
         -   char 和 varchar
 
@@ -6871,7 +6871,7 @@ _数据量更加庞大，更加侧重数据分析和数据挖掘，供企业决�
         -   TIME类型
         -   YEAR年份类型
 
-        ![Python-\_MySQL_DATA_TIME](http://images.dorc.top/blog/Python/Python-MySQL_DATA_TIME.png)
+        ![Python-\_MySQL_DATA_TIME](http://localhost:9710/blog/Python/Python-MySQL_DATA_TIME.png)
 
         -   注意：
 
@@ -6983,7 +6983,7 @@ _where子句_
 
         -   运算符优先级
 
-            ![Python-MySQL_Operator_Level](http://images.dorc.top/blog/Python/Python-MySQL_Operator_Level.png)
+            ![Python-MySQL_Operator_Level](http://localhost:9710/blog/Python/Python-MySQL_Operator_Level.png)
 
 1.  插入（insert）
 

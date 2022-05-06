@@ -2,7 +2,7 @@
 
 ## 简介：
 
-![Python-Django](http://images.dorc.top/blog/Python/Python-Django.png)
+![Python-Django](http://localhost:9710/blog/Python/Python-Django.png)
 
 -   组件：
 
@@ -1848,7 +1848,7 @@ _[模板字段 参考文档](https://yiyibooks.cn/xx/Django_1.11.6/ref/models/fi
 -   每个中间件组件负责做一些特定的功能。例如, Django包含一个中间件组件 AuthenticationMiddleware ,它使用会话将用户与请求关联起来
 -   中间件被记录在 built-in middleware reference中
 
-![Python-Django_Middleware](http://images.dorc.top/blog/Python/Python-Django_Middleware.jpeg)
+![Python-Django_Middleware](http://localhost:9710/blog/Python/Python-Django_Middleware.jpeg)
 
 -   中间件类
 
@@ -2773,7 +2773,7 @@ from django.conf import settings
 
 ### 前后端分离
 
-![Python_WebProject](http://images.dorc.top/blog/Python/Python_WebProject.png)
+![Python_WebProject](http://localhost:9710/blog/Python/Python_WebProject.png)
 
 -   前端:即客户端,负责渲染用户显示界面【如web的js动态渲染页面,安卓,ios,pc客户端等】
 -   后端:即服务器端,负责接收http请求,处理数据
@@ -2838,9 +2838,9 @@ from django.conf import settings
         2.  计算每一个字符对应的 ASCII码 (二进制)
         3.  将8位的二进制码,按照毎6位一组重新分组,不足6位的在后面补0
         
-        ![Python-Net_DeadLock](http://images.dorc.top/blog/Python/Python_WebProject_Base64.png)
+        ![Python-Net_DeadLock](http://localhost:9710/blog/Python/Python_WebProject_Base64.png)
 
-        ![Python-Net_DeadLock](http://images.dorc.top/blog/Python/Python_WebProject_Base64min.png)
+        ![Python-Net_DeadLock](http://localhost:9710/blog/Python/Python_WebProject_Base64min.png)
 
     -   注：
         -   弊端：编码后的字串一定比编码前多，传输量有些冗余

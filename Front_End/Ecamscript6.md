@@ -571,7 +571,7 @@ get('data.json', function(data) {
 
 callbackhell：
 
-![callbackhell](http://images.dorc.top/blog/Ecamscript6/callbackhell.jpg)
+![callbackhell](http://localhost:9710/blog/Ecamscript6/callbackhell.jpg)
 
 无法保证顺序的代码：
 
@@ -812,7 +812,7 @@ p1.then(
   })
 ```
 
-![Snipaste_2019-10-19_15-40-57](http://images.dorc.top/blog/Ecamscript6/Snipaste_2019-10-19_15-40-57.jpg)
+![Snipaste_2019-10-19_15-40-57](http://localhost:9710/blog/Ecamscript6/Snipaste_2019-10-19_15-40-57.jpg)
 
 => 封装实例 promise
 

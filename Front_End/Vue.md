@@ -5,7 +5,7 @@
 - MVC 是后端的分层开发概念，分为 Model ，View，Controllers
 - MVVM 是前端视图层的概念，主要关注于 视图层分离，也就是说：MVVM 把前端的视图层，分为了 三部分 Model, View , VM ViewModel
 
-![01.MVC和MVVM的关系图解](http://images.dorc.top/blog/vue/MVC&MVVM.png)
+![01.MVC和MVVM的关系图解](http://localhost:9710/blog/vue/MVC&MVVM.png)
 
 ## Vue 操作
 
@@ -767,7 +767,7 @@ parseInt(binding.value) + 'px' } } ···
 - watch 中的属性 一定是 data 中 已经存在的数据
 - **当需要监听一个对象的改变时，普通的 watch 方法无法监听到对象内部属性的改变，只有 data 中的数据才能够监听到变化，此时就需要 deep 属性对对象进行深度监听**
 
-![Snipaste_2019-12-12_08-48-43](http://images.dorc.top/blog/vue/Snipaste_2019-12-12_08-48-43.png)
+![Snipaste_2019-12-12_08-48-43](http://localhost:9710/blog/vue/Snipaste_2019-12-12_08-48-43.png)
 
 ```js
     // html : <p>{{totalcount}}</p>
@@ -934,7 +934,7 @@ _计算属性 vs 监听器_
 
 生命周期钩子 = 生命周期函数 = 生命周期事件
 
-![lifecycle](http://images.dorc.top/blog/vue/lifecycle.jpg)
+![lifecycle](http://localhost:9710/blog/vue/lifecycle.jpg)
 
 主要的生命周期函数分类：
 
@@ -3296,7 +3296,7 @@ module.exports = {
 
 **token 原理：**
 
-![token](http://images.dorc.top/blog/vue/token.png)
+![token](http://localhost:9710/blog/vue/token.png)
 
 1. 将登录成功之后的 token ，保存到客户端的 sessionStorage 中
    - 项目中除了 login 之外其他的 API 接口，必须在登录以后才能访问
