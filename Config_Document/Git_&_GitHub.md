@@ -26,8 +26,9 @@
    1. 创建并切换至该分支：`git checkout -b [branch_name]`
    2. 切换分支：`git checkout [branch_name]`
    3. 将目标分支合并：`git merge [branch_name]`
-   4. 从远程拉取分支：`git fetch origin [branch_name]`
-   5. 将指定 commit hash 合并到当前分支：`git cherry-pick [hash]`
+   4. 将指定 commit hash 合并到当前分支：`git cherry-pick [hash]`
+   5. 从远程拉取分支：`git fetch origin [branch_name]`
+   6. 从远程拉取指定分支的仓库：`git clone -b [branch_name] [remote_url]`
 
 5. tag
 
@@ -37,6 +38,13 @@
    4. 创建 tag，并添加注释：`git tag -a [tag_name] -m "[tag_info]"`
    5. 提交至远端：`git push origin --tags`
 
-6. 报错解决
+6. 回退
+
+   1. 常用的回退方式：
+      1. 回退到上个版本：`git reset --soft HEAD~1`(本地有上次提交的缓存，即：将远程回退到本地的缓存区)
+      2. 提交：`git push origin [branch_name] --force`(当前分支的版本低于远程分支的版本,需要使用 --force 提交)
+   2. 直接回退上个版本，本地没有缓存：`git reset --hard HEAD~1`
+  
+7. 报错解决
 
    1. LF 的报错：`git config --global core.autocrlf false`
