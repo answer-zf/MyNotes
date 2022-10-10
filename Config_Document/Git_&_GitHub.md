@@ -30,7 +30,12 @@
    5. 从远程拉取分支：`git fetch origin [branch_name]`
    6. 从远程拉取指定分支的仓库：`git clone -b [branch_name] [remote_url]`
 
-5. tag
+5. 暂存
+
+   1. 暂时存储：`git stash`
+   2. 恢复已存储：`git stash pop`
+
+6. tag
 
    1. 查看 tag：`git tag`
    2. 创建 tag：`git tag [tag_name]`
@@ -38,13 +43,13 @@
    4. 创建 tag，并添加注释：`git tag -a [tag_name] -m "[tag_info]"`
    5. 提交至远端：`git push origin --tags`
 
-6. 回退
+7. 回退
 
    1. 常用的回退方式：
       1. 回退到上个版本：`git reset --soft HEAD~1`(本地有上次提交的缓存，即：将远程回退到本地的缓存区)
       2. 提交：`git push origin [branch_name] --force`(当前分支的版本低于远程分支的版本,需要使用 --force 提交)
    2. 直接回退上个版本，本地没有缓存：`git reset --hard HEAD~1`
   
-7. 报错解决
+8. 报错解决
 
    1. LF 的报错：`git config --global core.autocrlf false`
