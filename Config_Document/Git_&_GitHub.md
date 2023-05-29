@@ -29,6 +29,8 @@
    4. 将指定 commit hash 合并到当前分支：`git cherry-pick [hash]`
    5. 从远程拉取分支：`git fetch origin [branch_name]`
    6. 从远程拉取指定分支的仓库：`git clone -b [branch_name] [remote_url]`
+   7. 删除本地分支：`git branch -d [branch_name]`
+   8. 删除远程分支：`git push origin --delete [branch_name]`
 
 5. 暂存
 
